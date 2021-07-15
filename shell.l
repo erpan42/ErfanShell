@@ -66,9 +66,6 @@ void myunputc(int c) {
   return WORD;
 }
 
-.  {
-    return NOTOKEN;
-}
 
 %%
 
