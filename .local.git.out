@@ -193,3 +193,9 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 95cd4e4] Commit
+ 4 files changed, 8 insertions(+), 3 deletions(-)
+M	.local.git.out
+M	shell.l
+M	shell.y
+Your branch is up to date with 'origin/master'.

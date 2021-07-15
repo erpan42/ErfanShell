@@ -108,16 +108,7 @@ iomodifier_opt:
     printf("   Yacc: insert output \"%s\"\n", $2->c_str());
     Shell::_currentCommand._outFile = $2;
   }
-  | GREATAMPERSAND WORD {
-	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._outFile = $2;
-	Shell::_currentCommand._errFile = $2;
-  }
-  | GREATGREAT WORD {
-	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._append = 1;
-	Shell::_currentCommand._outFile = $2;
-  } 
+  
   | GREATGREATAMPERSAND WORD {
 	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._append = 1;
@@ -128,6 +119,16 @@ iomodifier_opt:
 	printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._inFile = $2;
   }
+  | GREATAMPERSAND WORD {
+	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	Shell::_currentCommand._outFile = $2;
+	Shell::_currentCommand._errFile = $2;
+  }
+  | GREATGREAT WORD {
+	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	Shell::_currentCommand._append = 1;
+	Shell::_currentCommand._outFile = $2;
+  } 
   ;
 
  background_opt:
