@@ -1,0 +1,181 @@
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.local.git.out
+
+nothing added to commit but untracked files present (use "git add" to track)
+M	Makefile
+[master 8a13627] \Total:                   0.0 of 70.0\
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+M	Makefile
+[master 569467b] \Total:                   0.0 of 70.0\
+ 4 files changed, 3422 insertions(+), 1 deletion(-)
+ create mode 100644 lex.yy.cc
+ create mode 100644 y.tab.cc
+ create mode 100644 y.tab.hh
+M	Makefile
+M	test-shell/testall.out
+[master 17090ba] Commit
+ 2 files changed, 3 insertions(+), 47 deletions(-)
+ rewrite test-shell/testall.out (94%)
+ mode change 100755 => 100644
+D	lex.yy.cc
+D	y.tab.cc
+D	y.tab.hh
+[master d7903c4] Commit
+ 3 files changed, 3421 deletions(-)
+ delete mode 100644 lex.yy.cc
+ delete mode 100644 y.tab.cc
+ delete mode 100644 y.tab.hh
+M	shell.l
+[master 3797d35] Commit
+ 4 files changed, 3421 insertions(+), 3 deletions(-)
+ create mode 100644 lex.yy.cc
+ create mode 100644 y.tab.cc
+ create mode 100644 y.tab.hh
+M	Makefile
+M	lex.yy.cc
+[master 43bf903] Commit
+ 2 files changed, 9 insertions(+), 16 deletions(-)
+D	lex.yy.cc
+D	y.tab.cc
+D	y.tab.hh
+[master 466018f] Commit
+ 3 files changed, 3414 deletions(-)
+ delete mode 100644 lex.yy.cc
+ delete mode 100644 y.tab.cc
+ delete mode 100644 y.tab.hh
+M	Makefile
+M	test-shell/testall.out
+[master 6eca80b] Commit
+ 2 files changed, 1 insertion(+), 2 deletions(-)
+M	Makefile
+[master ae993c3] Commit
+ 3 files changed, 224 insertions(+), 1 deletion(-)
+ create mode 100755 cat_grep.cc
+ create mode 100755 regular.cc
+D	test-shell/files/aaa
+D	test-shell/files/aaaa
+D	test-shell/files/bbb
+D	test-shell/files/ccc
+D	test-shell/files/file-list-1
+D	test-shell/files/file-list-2
+[master 1731e29] Commit
+ 6 files changed, 107 deletions(-)
+ delete mode 100755 test-shell/files/aaa
+ delete mode 100755 test-shell/files/aaaa
+ delete mode 100755 test-shell/files/bbb
+ delete mode 100755 test-shell/files/ccc
+ delete mode 100755 test-shell/files/file-list-1
+ delete mode 100755 test-shell/files/file-list-2
+M	Makefile
+D	README.md
+D	cat_grep.cc
+M	command.cc
+M	command.hh
+M	read-line.c
+D	regular.cc
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	tty-raw-mode.c
+[master f497239] Commit
+ 14 files changed, 4 insertions(+), 225 deletions(-)
+ mode change 100755 => 100644 Makefile
+ delete mode 100644 README.md
+ delete mode 100755 cat_grep.cc
+ mode change 100755 => 100644 command.cc
+ mode change 100755 => 100644 command.hh
+ mode change 100755 => 100644 read-line.c
+ delete mode 100755 regular.cc
+ mode change 100755 => 100644 shell.cc
+ mode change 100755 => 100644 shell.hh
+ mode change 100755 => 100644 shell.l
+ mode change 100755 => 100644 shell.y
+ mode change 100755 => 100644 simpleCommand.cc
+ mode change 100755 => 100644 simpleCommand.hh
+ mode change 100755 => 100644 tty-raw-mode.c
+M	Makefile
+M	test-shell/testall.out
+[master 4c31e6d] Commit
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+M	Makefile
+M	command.cc
+M	command.hh
+M	read-line.c
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/test_robustness
+M	test-shell/test_subshell
+M	test-shell/test_zombie
+M	test-shell/testall
+M	test-shell/testall.out
+M	tty-raw-mode.c
+[master cde8cbc] Commit
+ 16 files changed, 8 insertions(+), 18 deletions(-)
+ mode change 100644 => 100755 Makefile
+ mode change 100644 => 100755 command.cc
+ mode change 100644 => 100755 command.hh
+ mode change 100644 => 100755 read-line.c
+ mode change 100644 => 100755 shell.cc
+ mode change 100644 => 100755 shell.hh
+ mode change 100644 => 100755 shell.l
+ mode change 100644 => 100755 shell.y
+ mode change 100644 => 100755 simpleCommand.cc
+ mode change 100644 => 100755 simpleCommand.hh
+ mode change 100644 => 100755 test-shell/testall.out
+ mode change 100644 => 100755 tty-raw-mode.c
+M	shell.l
+[master 039f02f] Commit
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+[master 0592c2e] Commit
+ 3 files changed, 66 insertions(+), 3 deletions(-)
+ mode change 100755 => 100644 test-shell/file-list-1
+ mode change 100755 => 100644 test-shell/file-list-2
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.gitignore
+	.local.git.out
+	out
+	outfile
+	shell
+	"test-shell/\""
+
+nothing added to commit but untracked files present (use "git add" to track)
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+[master 79983ae] Commit
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.gitignore
+	.local.git.out
+	out
+	out2
+	outfile
+	"test-shell/\""
+
+nothing added to commit but untracked files present (use "git add" to track)
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.gitignore
+	.local.git.out
+	out
+	out2
+	outfile
+	"test-shell/\""
+
+nothing added to commit but untracked files present (use "git add" to track)
