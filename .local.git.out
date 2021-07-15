@@ -184,3 +184,5 @@ and have 1 and 1 different commits each, respectively.
   (use "git pull" to merge the remote branch into yours)
 [master fcb5211] Commit
  1 file changed, 3 insertions(+)
+Your branch is ahead of 'origin/master' by 3 commits.
+  (use "git push" to publish your local commits)
