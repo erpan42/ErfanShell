@@ -18,5 +18,5 @@ input_str+=$grep_str$grep_str$grep_str$grep_str$grep_str
 input_str+=$none_str$none_str$none_str
 input_str+=$ls_str$ls_str$ls_str$ls_str$ls_str$ls_str$ls_str$ls_str
 
-diff <(/bin/sh <<< "$input_str" 2>&1) <(prlimit --nproc=25 --cpu=25 ../shell <<< "$input_str" 2>&1)
+diff <(/bin/sh <<< "$input_str" 2>&1) <(../shell <<< "$input_str" 2>&1)
 exit $?
