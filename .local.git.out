@@ -186,3 +186,10 @@ and have 1 and 1 different commits each, respectively.
  1 file changed, 3 insertions(+)
 Your branch is ahead of 'origin/master' by 3 commits.
   (use "git push" to publish your local commits)
+[master 00587bd] Commit
+ 1 file changed, 2 insertions(+)
+M	.local.git.out
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
