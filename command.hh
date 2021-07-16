@@ -24,8 +24,8 @@ struct Command {
   std::string * _inFile;
   std::string * _errFile;
   bool _background;
-
-  int _append;	//if ">>", then _append = 1
+  //to check if contain two special letters such as <<,>>,&> in command. if ">>", then _append = 1 , 
+  int _append;	
 
   Command();
   void insertSimpleCommand( SimpleCommand * simpleCommand );

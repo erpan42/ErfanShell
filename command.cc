@@ -31,7 +31,8 @@ Command::Command() {
     _inFile = NULL;
     _errFile = NULL;
     _background = false;
-	_append = 0;
+	
+	_append = 0; // to initialize '_append'
 }
 
 void Command::insertSimpleCommand( SimpleCommand * simpleCommand ) {
@@ -65,7 +66,7 @@ void Command::clear() {
     _errFile = NULL;
 
     _background = false;
-	_append = 0;
+	_append = 0; // to initialize '_append'
 }
 
 void Command::print() {
@@ -110,24 +111,24 @@ void Command::execute() {
 	// For every simple command fork a new process
 	// Setup i/o redirection
 	// and call exec
-	int dfltin = dup(0);
-	int dfltout = dup(1);
-	int dflterr = dup(2);
+	int dfltin = dup(0); // stdin A file descriptor that you make can take a value 0, 1, 2 if stdin, stdout or stderr are closed.  
+	int dfltout = dup(1);// stdout A file descriptor that you make can take a value 0, 1, 2 if stdin, stdout or stderr are closed.
+	int dflterr = dup(2);// stderr A file descriptor that you make can take a value 0, 1, 2 if stdin, stdout or stderr are closed.
 
-	int fdin = 0;
+	int fdin = 0; 
 	int	fdout = 0;
 	int fderr = 0;
 
 	if (_inFile) {
-		fdin = open(_inFile->c_str(), O_RDONLY);
+		fdin = open(_inFile->c_str(), O_RDONLY); // to open _infile to read command from file
 	}
 	else {
-		fdin = dup(dfltin);
+		fdin = dup(dfltin); // to open dfltin to read command from key
 	}
 
 	if (_errFile) {
 		if (_append) {
-			fderr = open(_errFile->c_str(), O_WRONLY | O_APPEND | O_CREAT, 0600);
+			fderr = open(_errFile->c_str(), O_WRONLY | O_APPEND | O_CREAT, 0600); 
 		}
 		else {
 			fderr = open(_errFile->c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0600);
@@ -137,7 +138,7 @@ void Command::execute() {
 		fderr = dup(dflterr);
 	}
 
-	dup2(fderr, 2);
+	dup2(fderr, 2); // to check if open proceass has error part.
 	close(fderr);
 
 	int pid;
@@ -166,7 +167,8 @@ void Command::execute() {
 				fdout = dup(dfltout);
 			}
 		}
-		else {	//Not last simple command->create pipe
+		else {	
+			//Not last simple command->create pipe
 			int fdpipe[2];
 			pipe(fdpipe);
 			fdout = fdpipe[1];
@@ -202,7 +204,7 @@ void Command::execute() {
 
 	}	//for
 
-	dup2(dfltin, 0);
+	dup2(dfltin, 0); 
 	dup2(dfltout, 1);
 	dup2(dflterr, 2);
 	close(dfltin);
