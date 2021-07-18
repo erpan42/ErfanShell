@@ -4,7 +4,7 @@
  * CS-252 
  * shell.l: lexical analyzer for shell
  * You have to extend it.
- * Tokens: \n, \t, |, &, <, >, >&, >>, >>&, 2>
+ * Tokens: \n, \t, |, &, <, >, >&, >>, >>&
  * %token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND 
  */
 

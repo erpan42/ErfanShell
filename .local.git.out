@@ -362,3 +362,11 @@ Your branch is up to date with 'origin/master'.
  3 files changed, 20 insertions(+), 1 deletion(-)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master c1242ce] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	shell.cc
+M	shell.l
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+Your branch is up to date with 'origin/master'.
