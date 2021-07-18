@@ -34,7 +34,8 @@ struct Command {
   void clear();
   void print();
   void execute();
-  
+  bool builtIn(int i);	//i is the index of commandlist
+  bool builtIn2(int i);	//printenv and source
   static SimpleCommand *_currentSimpleCommand;
 };
 
