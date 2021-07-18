@@ -153,11 +153,7 @@ iomodifier_opt:
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._inFile = $2;
   }
-  | TWOGREAT WORD {
-	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._errFile = $2;
-  }
-  ;
+  
 
  background_opt:
 	AMPERSAND {
