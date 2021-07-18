@@ -384,3 +384,9 @@ Your branch is up to date with 'origin/master'.
  rewrite shell.cc (77%)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master bf35654] Commit
+ 1 file changed, 5 insertions(+)
+M	.local.git.out
+M	shell.l
+M	shell.y
+Your branch is up to date with 'origin/master'.
