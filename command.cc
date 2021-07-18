@@ -194,10 +194,11 @@ void Command::execute() {
 				x[j][strlen(_simpleCommands[i]->_arguments[j]->c_str())] = '\0';
 
 			}
-			// /x[argsize] = NULL;
+			x[argsize] = NULL;
 			free(x);
+			printf("222");
 			execvp(x[0], x);
-			//perror("execvp");
+			printf("333");
 			_exit(1);	//exit immeditately without messing with buffer
 		}	//if pid ==  0 
 	}	//for
