@@ -30,7 +30,6 @@ Command::Command() {
     _outFile = NULL;
     _inFile = NULL;
     _errFile = NULL;
-
     _background = false;
 	_append = 0;
 }
@@ -96,6 +95,7 @@ void Command::print() {
 
 void Command::execute() {
 
+	//TODO:
 	//printf("_simpleCommands.size is %zu", _simpleCommands.size());
 	// Don't do anything if there are no simple commands
 	if (_simpleCommands.size() == 0) {
@@ -104,7 +104,7 @@ void Command::execute() {
 	}
 
 	// Print contents of Command data structure
-	//print();
+	print();
 
 	// Add execution here
 	// For every simple command fork a new process
@@ -144,7 +144,7 @@ void Command::execute() {
 
 	for (size_t i = 0; i < _simpleCommands.size(); i++) {
 
-		
+		//TODO: Handle several built-in commands
 
 		//redirect input
 		dup2(fdin, 0);
@@ -162,7 +162,7 @@ void Command::execute() {
 				}
 			}
 			else {
-				//No outfile,use default output
+				//Use default output
 				fdout = dup(dfltout);
 			}
 		}
@@ -173,7 +173,7 @@ void Command::execute() {
 			fdin = fdpipe[0];
 		}	//if/else
 
-		//Redirect the output to fdout, which is fdpipe[1]
+		//Redirect the output
 		dup2(fdout, 1);
 		close(fdout);
 
@@ -199,10 +199,9 @@ void Command::execute() {
 			//perror("execvp");
 			_exit(1);	//exit immeditately without messing with buffer
 		}
-			
+
 	}	//for
 
-	//restore in/out/err to default
 	dup2(dfltin, 0);
 	dup2(dfltout, 1);
 	dup2(dflterr, 2);
