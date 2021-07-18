@@ -404,3 +404,15 @@ M	command.cc
 M	command.hh
 M	shell.cc
 Your branch is up to date with 'origin/master'.
+[master 73abe4b] Commit
+ 4 files changed, 191 insertions(+), 93 deletions(-)
+ rewrite shell.cc (77%)
+M	.local.git.out
+D	outfile
+M	shell.cc
+M	shell.l
+M	shell.y
+D	shell1.l
+D	shell1.y
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

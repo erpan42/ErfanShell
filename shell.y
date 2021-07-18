@@ -28,7 +28,7 @@
 }
 
 %token <cpp_string> WORD
-%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND
+%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT
 
 %{
 //#define yylex yylex
@@ -56,11 +56,11 @@ command: simple_command
 
 simple_command:	
   pipe_list io_modifier_list background_opt NEWLINE {
-    printf("   Yacc: Execute command\n");
+    //printf("   Yacc: Execute command\n");
     Shell::_currentCommand.execute();
   }
   | NEWLINE {
-	//Shell::prompt();
+	Shell::prompt();
   }
   | error NEWLINE { yyerrok; }
   ;
@@ -84,14 +84,19 @@ argument_list:
 
 argument:
   WORD {
-    printf("   Yacc: insert argument \"%s\"\n", $1->c_str());
+    //printf("   Yacc: insert argument \"%s\"\n", $1->c_str());
+
     Command::_currentSimpleCommand->insertArgument( $1 );
   }
   ;
 
 command_word:
   WORD {
-    printf("   Yacc: insert command \"%s\"\n", $1->c_str());
+    //2.3: Exit
+	if ( strcmp($1->c_str(), "exit") == 0 ) {
+		printf("Good Bye!!\n");
+		exit(1);
+	}
     Command::_currentSimpleCommand = new SimpleCommand();
     Command::_currentSimpleCommand->insertArgument( $1 );
   }
@@ -100,33 +105,57 @@ command_word:
 io_modifier_list:
 	io_modifier_list iomodifier_opt
 	| iomodifier_opt
-	|
+	| /* can be empty */
 	;
 
 iomodifier_opt:
   GREAT WORD {
-    printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+    //printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	if (Shell::_currentCommand._outFile != NULL ){
+		printf("Ambiguous output redirect.\n");
+		exit(0);
+	}
     Shell::_currentCommand._outFile = $2;
   }
   | GREATAMPERSAND WORD {
-	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	//printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	if (Shell::_currentCommand._outFile != NULL ){
+		printf("Ambiguous output redirect.\n");
+		exit(0);
+	}
 	Shell::_currentCommand._outFile = $2;
 	Shell::_currentCommand._errFile = $2;
   }
   | GREATGREAT WORD {
-	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	//printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	if (Shell::_currentCommand._outFile != NULL ){
+		printf("Ambiguous output redirect.\n");
+		exit(0);
+	}
 	Shell::_currentCommand._append = 1;
 	Shell::_currentCommand._outFile = $2;
   } 
   | GREATGREATAMPERSAND WORD {
-	printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	//printf("   Yacc: insert output \"%s\"\n", $2->c_str());
+	if (Shell::_currentCommand._outFile != NULL ){
+		printf("Ambiguous output redirect.\n");
+		exit(0);
+	}
 	Shell::_currentCommand._append = 1;
 	Shell::_currentCommand._outFile = $2;
 	Shell::_currentCommand._errFile = $2;
   }
   | LESS WORD {
-	printf("   Yacc: insert input \"%s\"\n", $2->c_str());
+  	if (Shell::_currentCommand._inFile != NULL ){
+		printf("Ambiguous output redirect.\n");
+		exit(0);
+	}
+	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._inFile = $2;
+  }
+  | TWOGREAT WORD {
+	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
+	Shell::_currentCommand._errFile = $2;
   }
   ;
 
@@ -134,7 +163,7 @@ iomodifier_opt:
 	AMPERSAND {
 		Shell::_currentCommand._background = true;
 	}
-	|
+	| /* can be empty */
 	;
 
 %%
