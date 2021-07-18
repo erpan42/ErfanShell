@@ -194,7 +194,8 @@ void Command::execute() {
 				x[j][strlen(_simpleCommands[i]->_arguments[j]->c_str())] = '\0';
 
 			}
-			x[argsize] = NULL;
+			// /x[argsize] = NULL;
+			free(x);
 			execvp(x[0], x);
 			//perror("execvp");
 			_exit(1);	//exit immeditately without messing with buffer
