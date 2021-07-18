@@ -548,3 +548,12 @@ Your branch is up to date with 'origin/master'.
  1 file changed, 4 insertions(+)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master b315648] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	command.cc
+M	"test-shell/\""
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

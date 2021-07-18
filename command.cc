@@ -195,10 +195,8 @@ void Command::execute() {
 
 			}
 			x[argsize] = NULL;
-			free(x);
-			printf("222");
 			execvp(x[0], x);
-			printf("333");
+			//perror("execvp");
 			_exit(1);	//exit immeditately without messing with buffer
 		}	//if pid ==  0 
 	}	//for
