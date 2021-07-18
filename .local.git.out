@@ -304,3 +304,15 @@ M	shell.l
 M	shell.y
 D	shell1.cc
 Your branch is up to date with 'origin/master'.
+[master 12dec9a] Commit
+ 6 files changed, 402 insertions(+), 12 deletions(-)
+ rename shell1.cc => shell.cc (100%)
+ create mode 100644 shell1.l
+ create mode 100644 shell1.y
+M	.local.git.out
+M	shell.cc
+M	shell.y
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
