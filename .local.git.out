@@ -463,3 +463,10 @@ Your branch is up to date with 'origin/master'.
  5 files changed, 14 insertions(+), 4 deletions(-)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master 5dfb1da] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

@@ -94,68 +94,6 @@ void Command::print() {
     printf( "\n\n" );
 }
 
-bool Command::builtIn(int i) {
-	//TODO
-	//printf("Our command is %s\n", _simpleCommands[i]->_arguments[0]->c_str());
-
-	//setenv
-	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "setenv") == 0 ) {
-		if (setenv(_simpleCommands[i]->_arguments[1]->c_str(), _simpleCommands[i]->_arguments[2]->c_str(), 1)) {
-			perror("setenv");
-		}
-		clear();
-		Shell::prompt();
-		return true;
-	}
-
-	//unsetenv
-	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "unsetenv") == 0 ) {
-		if (unsetenv(_simpleCommands[i]->_arguments[1]->c_str())) {
-			perror("unsetenv");
-		}
-		clear();
-		Shell::prompt();
-		return true;
-	}
-
-	//cd
-	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "cd") == 0) {
-
-		int error;
-		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
-			error = chdir(getenv("HOME"));
-		}
-		else {
-			error = chdir(_simpleCommands[i]->_arguments[1]->c_str());
-		}
-
-		if (error < 0) {	//if error
-			perror("cd");
-		}
-
-		clear();
-		Shell::prompt();
-		return true;
-	}
-
-	return false;
-}
-
-bool Command::builtIn2(int i) {
-	//printenv in child process
-	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "printenv") == 0) {
-		char ** envvar = environ;
-
-		int i = 0;
-		while (envvar[i] != NULL) {
-			printf("%s\n", envvar[i]);
-			i++;
-		}
-		return true;
-	}
-	return false;
-}
-
 void Command::execute() {
 
 	//printf("_simpleCommands.size is %zu", _simpleCommands.size());
@@ -206,10 +144,7 @@ void Command::execute() {
 
 	for (size_t i = 0; i < _simpleCommands.size(); i++) {
 
-		//2.6: setenv, unsetenv, cd
-		if (builtIn(i)) {
-			return;
-		}
+		
 
 		//redirect input
 		dup2(fdin, 0);
@@ -252,11 +187,7 @@ void Command::execute() {
 
 		if (pid == 0) {
 			//bool envcheck = false;
-			//2.6: printenv
-			if (builtIn2(i)) {
-				return;
-			}
-
+			
 			//2.6: source 
 			if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "source") == 0) {
 				FILE * fp = fopen(_simpleCommands[i]->_arguments[1]->c_str(), "r");
