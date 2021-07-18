@@ -273,3 +273,15 @@ Your branch is up to date with 'origin/master'.
  mode change 100755 => 100644 tty-raw-mode.c
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master c5e0d94] Commit
+ 1 file changed, 16 insertions(+)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	shell.cc
+M	shell.l
+M	shell.y
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
