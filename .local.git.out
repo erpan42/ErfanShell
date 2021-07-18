@@ -390,3 +390,10 @@ M	.local.git.out
 M	shell.l
 M	shell.y
 Your branch is up to date with 'origin/master'.
+[master e7568f8] Commit
+ 3 files changed, 93 insertions(+), 240 deletions(-)
+ rewrite shell.l (77%)
+M	.local.git.out
+M	shell.cc
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
