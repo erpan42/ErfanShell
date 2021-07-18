@@ -397,3 +397,10 @@ M	.local.git.out
 M	shell.cc
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master e9bbeb2] Commit
+ 3 files changed, 57 insertions(+), 3 deletions(-)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	shell.cc
+Your branch is up to date with 'origin/master'.

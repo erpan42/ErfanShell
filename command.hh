@@ -23,8 +23,9 @@ struct Command {
   std::string * _outFile;
   std::string * _inFile;
   std::string * _errFile;
-  bool _background;
 
+  //User Add-on
+  bool _background;	//run in background or not
   int _append;	//if ">>", then _append = 1
 
   Command();
@@ -33,7 +34,8 @@ struct Command {
   void clear();
   void print();
   void execute();
-
+  bool builtIn(int i);	//i is the index of commandlist
+  bool builtIn2(int i);	//printenv and source
   static SimpleCommand *_currentSimpleCommand;
 };
 
