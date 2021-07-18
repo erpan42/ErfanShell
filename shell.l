@@ -5,7 +5,7 @@
  * shell.l: lexical analyzer for shell
  * You have to extend it.
  * Tokens: \n, \t, |, &, <, >, >&, >>, >>&, 2>
- * %token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT
+ * %token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND 
  */
 
 %{
@@ -59,9 +59,6 @@ void myunputc(int c) {
 	return GREATGREATAMPERSAND;
 }
 
-"2>" {
-	return TWOGREAT;
-}
 
 \$\([^\n]*\) {
 	/* 2.8: Subshell*/
