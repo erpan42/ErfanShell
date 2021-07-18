@@ -352,3 +352,9 @@ Your branch is up to date with 'origin/master'.
 M	.local.git.out
 M	shell.cc
 Your branch is up to date with 'origin/master'.
+[master 339acde] Commit
+ 2 files changed, 5 insertions(+), 13 deletions(-)
+M	.local.git.out
+M	shell.cc
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
