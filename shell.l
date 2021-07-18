@@ -5,7 +5,7 @@
  * shell.l: lexical analyzer for shell
  * You have to extend it.
  * Tokens: \n, \t, |, &, <, >, >&, >>, >>&, 2>
- * %token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT
+ * %token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT LESSLESSLESS
  */
 
 %{
@@ -53,6 +53,12 @@ void myunputc(int c) {
 
 ">>" {
 	return GREATGREAT;
+}
+
+"<<<" 
+{
+
+	return LESSLESSLESS;
 }
 
 ">>&" {
