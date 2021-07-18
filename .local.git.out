@@ -240,3 +240,20 @@ M	command.cc
 M	command.hh
 M	shell.l
 Your branch is up to date with 'origin/master'.
+[master 45223b0] Commit
+ 4 files changed, 25 insertions(+), 14 deletions(-)
+M	.local.git.out
+M	Makefile
+M	command.cc
+M	command.hh
+D	out
+D	out2
+M	read-line.c
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	tty-raw-mode.c
+Your branch is up to date with 'origin/master'.
