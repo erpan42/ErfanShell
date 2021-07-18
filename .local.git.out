@@ -257,3 +257,19 @@ M	simpleCommand.cc
 M	simpleCommand.hh
 M	tty-raw-mode.c
 Your branch is up to date with 'origin/master'.
+[master 5868916] Commit
+ 14 files changed, 432 insertions(+), 110 deletions(-)
+ mode change 100755 => 100644 command.cc
+ mode change 100755 => 100644 command.hh
+ delete mode 100755 out
+ delete mode 100644 out2
+ mode change 100755 => 100644 read-line.c
+ mode change 100755 => 100644 shell.cc
+ mode change 100755 => 100644 shell.hh
+ mode change 100755 => 100644 shell.l
+ mode change 100755 => 100644 shell.y
+ mode change 100755 => 100644 simpleCommand.cc
+ mode change 100755 => 100644 simpleCommand.hh
+ mode change 100755 => 100644 tty-raw-mode.c
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
