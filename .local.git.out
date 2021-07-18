@@ -370,3 +370,12 @@ M	shell.l
 M	test-shell/file-list-1
 M	test-shell/file-list-2
 Your branch is up to date with 'origin/master'.
+[master 98e775b] Commit
+ 5 files changed, 46 insertions(+), 3 deletions(-)
+M	.local.git.out
+M	shell.cc
+M	shell.l
+M	shell.y
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+Your branch is up to date with 'origin/master'.

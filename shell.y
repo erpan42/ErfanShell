@@ -28,7 +28,7 @@
 }
 
 %token <cpp_string> WORD
-%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND
+%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT
 
 %{
 //#define yylex yylex
@@ -92,7 +92,11 @@ argument:
 
 command_word:
   WORD {
-    
+    //2.3: Exit
+	if ( strcmp($1->c_str(), "exit") == 0 ) {
+		printf("Good Bye!!\n");
+		exit(1);
+	}
     Command::_currentSimpleCommand = new SimpleCommand();
     Command::_currentSimpleCommand->insertArgument( $1 );
   }
@@ -149,7 +153,11 @@ iomodifier_opt:
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._inFile = $2;
   }
-  
+  | TWOGREAT WORD {
+	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
+	Shell::_currentCommand._errFile = $2;
+  }
+  ;
 
  background_opt:
 	AMPERSAND {
