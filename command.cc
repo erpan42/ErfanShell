@@ -186,85 +186,18 @@ void Command::execute() {
 		}
 
 		if (pid == 0) {
-			//bool envcheck = false;
-			
-			//2.6: source 
-			if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "source") == 0) {
-				FILE * fp = fopen(_simpleCommands[i]->_arguments[1]->c_str(), "r");
-
-				//Get to read
-				char cmdline[1024];
-
-				fgets(cmdline, 1023, fp);
-				fclose(fp);
-
-				int tempin = dup(0);
-				int tempout = dup(1);
-
-				//pipe
-				int fdpipein[2];
-				int fdpipeout[2];
-
-				pipe(fdpipein);
-				pipe(fdpipeout);
-
-				write(fdpipein[1], cmdline, strlen(cmdline));
-				write(fdpipein[1], "\n", 1);
-
-				close(fdpipein[1]);
-
-				dup2(fdpipein[0], 0);
-				close(fdpipein[0]);
-				dup2(fdpipeout[1], 1);
-				close(fdpipeout[1]);
-
-
-				int ret = fork();
-				if (ret == 0) {
-					execvp("/proc/self/exe", NULL);
-					_exit(1);
-				}
-				else if (ret < 0) {
-					perror("fork");
-					exit(1);
-				}
-
-				dup2(tempin, 0);
-				dup2(tempout, 1);
-				close(tempin);
-				close(tempout);
-
-				char ch;
-				char * buffer = (char *)malloc(4096);
-				//Set i back to 0
-				int i = 0;
-
-				//read from pipe and put in buffer
-				while (read(fdpipeout[0], &ch, 1)) {
-					if (ch != '\n') {
-						buffer[i++] = ch;
-					}		
-				}
-
-				buffer[i] = '\0';
-				printf("%s\n", buffer);
+			//Convert std::vector<std::string *> _arguments into char**
+			size_t argsize = _simpleCommands[i]->_arguments.size();
+			char ** x = new char*[argsize+1];
+			for (size_t j = 0; j < argsize; j++) {
+				x[j] = const_cast<char*>(_simpleCommands[i]->_arguments[j]->c_str());
+				x[j][strlen(_simpleCommands[i]->_arguments[j]->c_str())] = '\0';
 
 			}
-			else {
-					//Convert std::vector<std::string *> _arguments into char**
-					size_t argsize = _simpleCommands[i]->_arguments.size();
-					char ** x = new char*[argsize + 1];
-					for (size_t j = 0; j < argsize; j++) {
-						x[j] = const_cast<char*>(_simpleCommands[i]->_arguments[j]->c_str());
-						x[j][strlen(_simpleCommands[i]->_arguments[j]->c_str())] = '\0';
-
-					}
-					x[argsize] = NULL;
-					execvp(x[0], x);
-					//perror("execvp");
-					_exit(1);	//exit immeditately without messing with buffer
-
-			}	//if/else source
+			x[argsize] = NULL;
+			execvp(x[0], x);
+			//perror("execvp");
+			_exit(1);	//exit immeditately without messing with buffer
 		}	//if pid ==  0 
 	}	//for
 
