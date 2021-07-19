@@ -36,6 +36,10 @@ struct Command {
   void execute();
   
   static SimpleCommand *_currentSimpleCommand;
+  //i is the index of commandlist
+  bool builtIn(int i);	
+  //int i  is the index of commandlist.printenv and source
+  bool builtIn2(int i);	
 };
 
 #endif

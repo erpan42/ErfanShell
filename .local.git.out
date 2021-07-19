@@ -577,3 +577,12 @@ Your branch is up to date with 'origin/master'.
  3 files changed, 13 insertions(+), 1 deletion(-)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master 086039a] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	shell.cc
+M	shell.l
+M	shell.y
+Your branch is up to date with 'origin/master'.
