@@ -28,7 +28,7 @@
 }
 
 %token <cpp_string> WORD
-%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT
+%token NOTOKEN NEWLINE PIPE AMPERSAND LESS GREAT GREATAMPERSAND GREATGREAT GREATGREATAMPERSAND TWOGREAT LESSLESSLESS
 
 %{
 //#define yylex yylex
@@ -92,11 +92,11 @@ argument:
 
 command_word:
   WORD {
-    //2.3: Exit
-	if ( strcmp($1->c_str(), "exit") == 0 ) {
-		printf("Good Bye!!\n");
-		exit(1);
-	}
+    // Exit
+    if ( strcmp($1->c_str(), "exit") == 0 ) {
+      printf("Good Bye!!\n");
+      exit(1);
+    }
     Command::_currentSimpleCommand = new SimpleCommand();
     Command::_currentSimpleCommand->insertArgument( $1 );
   }
@@ -124,7 +124,7 @@ iomodifier_opt:
 		exit(0);
 	}
 	Shell::_currentCommand._outFile = $2;
-	Shell::_currentCommand._errFile = new std::string($2->c_str());;
+	Shell::_currentCommand._errFile = new std::string($2->c_str());
   }
   | GREATGREAT WORD {
 	//printf("   Yacc: insert output \"%s\"\n", $2->c_str());
@@ -143,7 +143,7 @@ iomodifier_opt:
 	}
 	Shell::_currentCommand._append = 1;
 	Shell::_currentCommand._outFile = $2;
-	Shell::_currentCommand._errFile = new std::string($2->c_str());;
+	Shell::_currentCommand._errFile = new std::string($2->c_str());
   }
   | LESS WORD {
   	if (Shell::_currentCommand._inFile != NULL ){
@@ -156,7 +156,11 @@ iomodifier_opt:
   | TWOGREAT WORD {
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._errFile = $2;
+  }| LESSLESSLESS WORD {
+	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
+	Shell::_currentCommand._errFile = $2;
   }
+
   ;
 
  background_opt:
