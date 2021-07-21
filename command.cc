@@ -96,7 +96,7 @@ void Command::print() {
 
 bool Command::builtIn(int i) {
 	
-
+	//setenv
 	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "setenv") == 0 ) {
 		if (setenv(_simpleCommands[i]->_arguments[1]->c_str(), _simpleCommands[i]->_arguments[2]->c_str(), 1)) {
 			perror("setenv");
@@ -105,7 +105,7 @@ bool Command::builtIn(int i) {
 		Shell::prompt();
 		return true;
 	}
-
+	//unsetenv
 	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "unsetenv") == 0 ) {
 		if (unsetenv(_simpleCommands[i]->_arguments[1]->c_str())) {
 			perror("unsetenv");
@@ -115,9 +115,11 @@ bool Command::builtIn(int i) {
 		return true;
 	}
 
+	//cd
 	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "cd") == 0) {
 
 		int error;
+
 		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
 			error = chdir(getenv("HOME"));
 		}else {
@@ -129,7 +131,7 @@ bool Command::builtIn(int i) {
 		}
 
 		clear();
-		//Shell::prompt();
+		Shell::prompt();
 		return true;
 	}
 	return false;
