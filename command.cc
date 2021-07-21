@@ -129,7 +129,7 @@ bool Command::builtIn(int i) {
 		}
 
 		clear();
-		Shell::prompt();
+		//Shell::prompt();
 		return true;
 	}
 	return false;
@@ -235,7 +235,7 @@ void Command::execute() {
 		dup2(fdout, 1);
 		close(fdout);
 
-		//2.6: setenv, unsetenv, cd
+		//setenv, unsetenv, cd
 		if (builtIn(i)) {
 			return;
 		}
