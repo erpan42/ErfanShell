@@ -46,7 +46,7 @@ int main() {
 
 	// Zombie sigaction
 	// Only analysize signal if background flag is true
-	if (Shell::_currentCommand._background == true) {
+	//if (Shell::_currentCommand._background == true) {
 		struct sigaction sigZombie;
 		sigZombie.sa_handler = zombie;
 		sigemptyset(&sigZombie.sa_mask);
@@ -56,7 +56,7 @@ int main() {
 			perror("sigaction");
 			exit(2);
 		}
-	}
+	//}
 	//Create .shellrc
 	FILE*fd = fopen(".shellrc", "r");
 	if (fd) {
