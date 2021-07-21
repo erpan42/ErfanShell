@@ -54,7 +54,7 @@ int main() {
 
 		if (sigaction(SIGCHLD, &sigZombie, NULL)) {
 			perror("sigaction");
-			exit(2);
+			exit(-1);
 		}
 	//}
 	//Create .shellrc
