@@ -604,3 +604,7 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 9fbbf8f] Commit
+ 11 files changed, 157 insertions(+), 74 deletions(-)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
