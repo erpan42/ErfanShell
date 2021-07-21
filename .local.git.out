@@ -744,3 +744,20 @@ M	shell.hh
 M	shell.l
 M	shell.y
 Your branch is up to date with 'origin/master'.
+[master 73f8280] Commit
+ 7 files changed, 841 insertions(+), 1028 deletions(-)
+ rewrite command.cc (70%)
+ rewrite shell.cc (94%)
+ rewrite shell.l (87%)
+ rewrite shell.y (80%)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	read-line.c
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+Your branch is up to date with 'origin/master'.
