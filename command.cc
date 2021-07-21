@@ -201,10 +201,7 @@ void Command::execute() {
 
 	for (size_t i = 0; i < _simpleCommands.size(); i++) {
 
-		//2.6: setenv, unsetenv, cd
-		if (builtIn(i)) {
-			return;
-		}
+		
 
 
 		//redirect input
@@ -237,6 +234,11 @@ void Command::execute() {
 		//Redirect the output to fdout, which is fdpipe[1]
 		dup2(fdout, 1);
 		close(fdout);
+
+		//2.6: setenv, unsetenv, cd
+		if (builtIn(i)) {
+			return;
+		}
 
 		//create child process
 		pid = fork();

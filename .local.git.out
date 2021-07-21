@@ -620,3 +620,10 @@ M	simpleCommand.cc
 M	simpleCommand.hh
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master b400180] Commit
+ 9 files changed, 115 insertions(+), 170 deletions(-)
+ rewrite simpleCommand.cc (73%)
+M	.local.git.out
+M	command.cc
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
