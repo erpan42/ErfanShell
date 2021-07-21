@@ -123,7 +123,8 @@ bool Command::builtIn(int i) {
 		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
 			error = chdir(getenv("HOME"));
 		}else {
-			//error = chdir(_simpleCommands[i]->_arguments[1]->c_str());
+			std::string *strpath = new std::string(_simpleCommands[i]->_arguments[1]->c_str());
+			error = chdir(strpath->c_str());
 		}
 
 		if (error < 0) {	//if error
