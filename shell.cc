@@ -15,25 +15,24 @@ void Shell::prompt() {
 	fflush(stdout);
 }
 
-//part2.1 when keydown ctrl+C, go to nextline in shell. nextline is myshell>>myshell>>
-
+//TODO: when ctrl+C on ongoing process, nextline is myshell>>myshell>>
 extern "C" void ctrlC(int sig) {
 	//fflush(stdin);
 	printf("\n");
 	Shell::prompt();
 }
 
-// Only one msg for the same PID
+//TODO: Only one msg for the same PID
 extern "C" void zombie(int sig) {
 	int pid = wait3(0, 0, NULL);
 
-	printf("[%d] exited.\n", pid);
+
 	while (waitpid(-1, NULL, WNOHANG) > 0) {};
+//	printf("[%d] exited.\n", pid);
 }
 
 int main() {
-	
-	//part2: when keydown ctrl+C, go to nextline in shell.
+	//2.1: CtrlC handling
 	struct sigaction sigCtrl;
 	sigCtrl.sa_handler = ctrlC;
 	sigemptyset(&sigCtrl.sa_mask);
@@ -44,20 +43,21 @@ int main() {
 		exit(2);
 	}
 
-	// Zombie sigaction
-	// Only analysize signal if background flag is true
-	if (Shell::_currentCommand._background == true) {
-		struct sigaction sigZombie;
+	//2.2: Zombie sigaction
+	//TODO: Only analysize signal if background flag is true
+	struct sigaction sigZombie;
+//	if (Shell::_currentCommand._background == true) {
 		sigZombie.sa_handler = zombie;
 		sigemptyset(&sigZombie.sa_mask);
 		sigZombie.sa_flags = SA_RESTART;
 
 		if (sigaction(SIGCHLD, &sigZombie, NULL)) {
 			perror("sigaction");
-			exit(2);
+			exit(-1);
 		}
-	}
-	//Create .shellrc
+//		}
+
+	//2.7: Create .shellrc
 	FILE*fd = fopen(".shellrc", "r");
 	if (fd) {
 		yyrestart(fd);
@@ -68,7 +68,6 @@ int main() {
 	else {
 		Shell::prompt();
 	}
-	
 
 	yyparse();
 }

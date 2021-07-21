@@ -95,8 +95,10 @@ void Command::print() {
 }
 
 bool Command::builtIn(int i) {
-	
+	//TODO
+	//printf("Our command is %s\n", _simpleCommands[i]->_arguments[0]->c_str());
 
+	//setenv
 	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "setenv") == 0 ) {
 		if (setenv(_simpleCommands[i]->_arguments[1]->c_str(), _simpleCommands[i]->_arguments[2]->c_str(), 1)) {
 			perror("setenv");
@@ -106,6 +108,7 @@ bool Command::builtIn(int i) {
 		return true;
 	}
 
+	//unsetenv
 	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "unsetenv") == 0 ) {
 		if (unsetenv(_simpleCommands[i]->_arguments[1]->c_str())) {
 			perror("unsetenv");
@@ -115,23 +118,27 @@ bool Command::builtIn(int i) {
 		return true;
 	}
 
+	//cd
 	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "cd") == 0) {
 
 		int error;
 		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
 			error = chdir(getenv("HOME"));
-		}else {
+		}
+		else {
 			error = chdir(_simpleCommands[i]->_arguments[1]->c_str());
 		}
 
 		if (error < 0) {	//if error
 			perror("cd");
+			//printf("cd: can't cd to: notfound\n");
 		}
 
 		clear();
-		Shell::prompt();
+	//	Shell::prompt();
 		return true;
 	}
+
 	return false;
 }
 
@@ -147,7 +154,6 @@ bool Command::builtIn2(int i) {
 		}
 		return true;
 	}
-
 	return false;
 }
 
@@ -201,12 +207,6 @@ void Command::execute() {
 
 	for (size_t i = 0; i < _simpleCommands.size(); i++) {
 
-		//2.6: setenv, unsetenv, cd
-		if (builtIn(i)) {
-			return;
-		}
-
-
 		//redirect input
 		dup2(fdin, 0);
 		close(fdin);
@@ -227,7 +227,7 @@ void Command::execute() {
 				fdout = dup(dfltout);
 			}
 		}
-		else {	//Not last simple command->create pipe
+		else {	//Not last simple command -> create pipe
 			int fdpipe[2];
 			pipe(fdpipe);
 			fdout = fdpipe[1];
@@ -238,6 +238,11 @@ void Command::execute() {
 		dup2(fdout, 1);
 		close(fdout);
 
+		//2.6: setenv, unsetenv, cd
+		if (builtIn(i)) {
+			return;
+		}
+
 		//create child process
 		pid = fork();
 		
@@ -247,18 +252,20 @@ void Command::execute() {
 		}
 
 		if (pid == 0) {
-			// printenv
+			//bool envcheck = false;
+
+			//In child process, builin: prinenv and source
+			//2.6: printenv
 			if (builtIn2(i)) {
 				return;
 			}
 
-			if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "source") == 0) 
-			{
+			//2.6: source 
+			if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "source") == 0) {
 				FILE * fp = fopen(_simpleCommands[i]->_arguments[1]->c_str(), "r");
 
 				//Get to read
 				char cmdline[1024];
-
 				fgets(cmdline, 1023, fp);
 				fclose(fp);
 
@@ -267,14 +274,12 @@ void Command::execute() {
 
 				//pipe
 				int fdpipein[2];
-				int fdpipeout[2];
-
 				pipe(fdpipein);
+				int fdpipeout[2];
 				pipe(fdpipeout);
 
 				write(fdpipein[1], cmdline, strlen(cmdline));
 				write(fdpipein[1], "\n", 1);
-
 				close(fdpipein[1]);
 
 				dup2(fdpipein[0], 0);
@@ -312,10 +317,9 @@ void Command::execute() {
 				buffer[i] = '\0';
 				printf("%s\n", buffer);
 
-			}else
-			{
-
-				//Convert std::vector<std::string *> _arguments into char**
+			}
+			else {
+					//Convert std::vector<std::string *> _arguments into char**
 					size_t argsize = _simpleCommands[i]->_arguments.size();
 					char ** x = new char*[argsize + 1];
 					for (size_t j = 0; j < argsize; j++) {
@@ -326,10 +330,9 @@ void Command::execute() {
 					x[argsize] = NULL;
 					execvp(x[0], x);
 					//perror("execvp");
-					_exit(1);
-			}
-			
+					_exit(1);	//exit immeditately without messing with buffer
 
+			}	//if/else source
 		}	//if pid ==  0 
 	}	//for
 
