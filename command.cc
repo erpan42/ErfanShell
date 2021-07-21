@@ -121,7 +121,8 @@ bool Command::builtIn(int i) {
 		int error;
 
 		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
-			printf("%s\n",getenv("HOME"));
+			error = chdir(getenv("HOME"));
+			
 		}else {
 
 			error = chdir(_simpleCommands[i]->_arguments[1]->c_str());
