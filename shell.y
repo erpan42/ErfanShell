@@ -156,9 +156,6 @@ iomodifier_opt:
   | TWOGREAT WORD {
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
 	Shell::_currentCommand._errFile = $2;
-  }| LESSLESSLESS WORD {
-	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._errFile = $2;
   }
 
   ;
