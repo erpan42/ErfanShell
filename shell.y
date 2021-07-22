@@ -123,7 +123,7 @@ iomodifier_opt:
 		printf("Ambiguous output redirect.\n");
 		exit(0);
 	}
-	Shell::_currentCommand._outFile = $2;
+	Shell::_currentCommand._outFile = new std::string($2->c_str());
 	Shell::_currentCommand._errFile = new std::string($2->c_str());
   }
   | GREATGREAT WORD {
@@ -133,7 +133,7 @@ iomodifier_opt:
 		exit(0);
 	}
 	Shell::_currentCommand._append = 1;
-	Shell::_currentCommand._outFile = $2;
+	Shell::_currentCommand._outFile = new std::string($2->c_str());
   } 
   | GREATGREATAMPERSAND WORD {
 	//printf("   Yacc: insert output \"%s\"\n", $2->c_str());
@@ -142,7 +142,7 @@ iomodifier_opt:
 		exit(0);
 	}
 	Shell::_currentCommand._append = 1;
-	Shell::_currentCommand._outFile = $2;
+	Shell::_currentCommand._outFile = new std::string($2->c_str());
 	Shell::_currentCommand._errFile = new std::string($2->c_str());
   }
   | LESS WORD {
@@ -151,11 +151,11 @@ iomodifier_opt:
 		exit(0);
 	}
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._inFile = $2;
+	Shell::_currentCommand._inFile = new std::string($2->c_str());
   }
   | TWOGREAT WORD {
 	//printf("   Yacc: insert input \"%s\"\n", $2->c_str());
-	Shell::_currentCommand._errFile = $2;
+	Shell::_currentCommand._errFile = new std::string($2->c_str());
   }
 
   ;
