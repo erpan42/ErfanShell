@@ -15,6 +15,7 @@ struct SimpleCommand {
   SimpleCommand();
   ~SimpleCommand();
   void insertArgument( std::string * argument );
+  std::string* envexpansion(std::string * argument);
   void print();
 };
 
