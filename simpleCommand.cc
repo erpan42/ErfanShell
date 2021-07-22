@@ -65,29 +65,29 @@ std::string * SimpleCommand::envexpansion(std::string * argument) {
 
 
 void SimpleCommand::insertArgument( std::string * argument ) {
-  //simply add the argument to the vector
-  char *arg = const_cast<char*> (argument->c_str());
-	printf("the argument to be inserted is: %s\n", arg);
+  // //simply add the argument to the vector
+  // char *arg = const_cast<char*> (argument->c_str());
+	// printf("the argument to be inserted is: %s\n", arg);
 
-	//3.1: environment variable expansion
-	std::string * envexp = envexpansion(argument);
+	// //3.1: environment variable expansion
+	// std::string * envexp = envexpansion(argument);
 
-	if (envtrue == true) {
-		argument = envexp;
-	}
+	// if (envtrue == true) {
+	// 	argument = envexp;
+	// }
 
-	//3.2: tilde expansion
+	// //3.2: tilde expansion
 
 
-	envtrue = false;
-	tildtrue = false;
+	// envtrue = false;
+	// tildtrue = false;
   _arguments.push_back(argument);
 }
 
 // Print out the simple command
 void SimpleCommand::print() {
   for (auto & arg : _arguments) {
-    std::cout << "\"" << arg << "\" \t";
+    std::cout << "\"" << *arg << "\" \t";
   }
   // effectively the same as printf("\n\n");
   std::cout << std::endl;
