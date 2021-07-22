@@ -64,21 +64,21 @@ std::string * SimpleCommand::envexpansion(std::string * argument) {
 }
 
 void SimpleCommand::insertArgument( std::string * argument ) {
-	char *arg = const_cast<char*> (argument->c_str());
-	printf("the argument to be inserted is: %s\n", arg);
+	// char *arg = const_cast<char*> (argument->c_str());
+	// printf("the argument to be inserted is: %s\n", arg);
 
-	//3.1: environment variable expansion
-	std::string * envexp = envexpansion(argument);
+	// //3.1: environment variable expansion
+	// std::string * envexp = envexpansion(argument);
 
-	if (envtrue == true) {
-		argument = envexp;
-	}
+	// if (envtrue == true) {
+	// 	argument = envexp;
+	// }
 
-	//3.2: tilde expansion
+	// //3.2: tilde expansion
 
 
-	envtrue = false;
-	tildtrue = false;
+	// envtrue = false;
+	// tildtrue = false;
 	_arguments.push_back(argument);
 }
 
