@@ -48,7 +48,7 @@ std::string * SimpleCommand::envexpansion(std::string * argument) {
 		while (*env) {
 			//no matching function for call to ¡®std::__cxx11::basic_string<char>::append(char&)
 			//invalid conversion from ¡®char¡¯ to ¡®const char*¡¯
-			str->append(*env);			
+			str->append(env);			
 		}
 		
 		return str;

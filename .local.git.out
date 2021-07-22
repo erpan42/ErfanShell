@@ -864,3 +864,9 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 799ca08] Commit
+ 5 files changed, 103 insertions(+), 81 deletions(-)
+ rewrite simpleCommand.cc (61%)
+M	.local.git.out
+M	simpleCommand.cc
+Your branch is up to date with 'origin/master'.
