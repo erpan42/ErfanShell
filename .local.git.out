@@ -945,3 +945,8 @@ M	command.cc
 M	command.hh
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 9488a4f] Commit
+ 4 files changed, 408 insertions(+), 388 deletions(-)
+ rewrite command.cc (60%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
