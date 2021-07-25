@@ -993,3 +993,17 @@ M	.local.git.out
 M	shell.cc
 M	shell.hh
 Your branch is up to date with 'origin/master'.
+[master e034b83] Commit
+ 3 files changed, 94 insertions(+), 76 deletions(-)
+ rewrite shell.cc (76%)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
