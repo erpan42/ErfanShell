@@ -1,84 +1,75 @@
 #include <cstdio>
-#include <stdio.h>
-#include <signal.h>
-#include <string.h>
-#include <stdlib.h>
+
 #include "shell.hh"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <sys/wait.h>
 
 void yyrestart(FILE * file);
 int yyparse(void);
-char * dir;
 
 void Shell::prompt() {
-//printf("in prompt");
-  if(isatty(0))
-	printf("myshell>");
-//printf("after prompt");
-  fflush(stdout);
+
+	//if input is from terminal
+	if (isatty(0)) {
+		printf("myshell>");
+		fflush(stdout);
+	}
+	fflush(stdout);
 }
 
-extern "C" void disp( int sig )
-{
-	fprintf( stderr, "\nsig:%d	Exit\n", sig);
+//part2 when keydown ctrl+C, go to nextline in shell. nextline is myshell>>myshell>>
+
+extern "C" void ctrlC(int sig) {
+	//fflush(stdin);
+	printf("\n");
 	Shell::prompt();
 }
 
-extern "C" void disp2( int sig )
-{
-	wait3(0,0,NULL);
-	while(waitpid(-1, NULL, WNOHANG) > 0)
-	{
-	}
+// Only one msg for the same PID
+extern "C" void zombie(int sig) {
+	int pid = wait3(0, 0, NULL);
+
+	//printf("[%d] exited.\n", pid);
+	while (waitpid(-1, NULL, WNOHANG) > 0) {};
 }
 
 int main() {
-	struct sigaction sa;
-	sa.sa_handler = disp;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	
+	//part2: when keydown ctrl+C, go to nextline in shell.
+	struct sigaction sigCtrl;
+	sigCtrl.sa_handler = ctrlC;
+	sigemptyset(&sigCtrl.sa_mask);
+	sigCtrl.sa_flags = SA_RESTART;
 
-	if(sigaction(SIGINT, &sa, NULL)){
+	if (sigaction(SIGINT, &sigCtrl, NULL)) {
 		perror("sigaction");
 		exit(2);
 	}
 
-	struct sigaction sa2;
-	sa2.sa_handler = disp2;
-	sigemptyset(&sa2.sa_mask);
-	sa2.sa_flags = SA_RESTART;
+	// Zombie sigaction
+	// Only analysize signal if background flag is true
+	//if (Shell::_currentCommand._background == true) {
+		struct sigaction sigZombie;
+		sigZombie.sa_handler = zombie;
+		sigemptyset(&sigZombie.sa_mask);
+		sigZombie.sa_flags = SA_RESTART;
 
-	if(sigaction(SIGCHLD, &sa2, NULL)){
-		perror("sigaction");
-		exit(2);
-	}
-
-	//Source shellrc
-	FILE * fd = fopen(".shellrc", "r");
-	if(fd)
-	{
+		if (sigaction(SIGCHLD, &sigZombie, NULL)) {
+			perror("sigaction");
+			exit(-1);
+		}
+	//}
+	//Create .shellrc
+	FILE*fd = fopen(".shellrc", "r");
+	if (fd) {
 		yyrestart(fd);
 		yyparse();
 		yyrestart(stdin);
 		fclose(fd);
 	}
-	else
+	else {
 		Shell::prompt();
+	}
+	
 
-//	printf("before pwd");
-	int size = sizeof(char*)*(strlen(getenv("PWD")) +1+strlen(getenv("_")));
-	dir = (char *)malloc(size);
-	strncpy(dir, getenv("PWD"), size);
-	strcat(dir, "/");
-	strcat(dir, getenv("_"));
-//	printf("after pwd");
-
-	Shell::prompt();
-//	printf("before yyparse");
 	yyparse();
 }
 
