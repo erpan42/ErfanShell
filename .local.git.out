@@ -976,3 +976,13 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 9b32a53] Commit
+ 11 files changed, 1175 insertions(+), 856 deletions(-)
+ rewrite command.cc (67%)
+ rewrite shell.cc (77%)
+ rewrite shell.l (77%)
+ rewrite shell.y (66%)
+M	.local.git.out
+M	command.cc
+M	command.hh
+Your branch is up to date with 'origin/master'.
