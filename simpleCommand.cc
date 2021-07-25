@@ -77,8 +77,8 @@ void SimpleCommand::insertArgument( std::string * argument ) {
 	// //3.2: tilde expansion
 
 
-	// envtrue = false;
-	// tildtrue = false;
+	envtrue = false;
+	tildtrue = false;
 	_arguments.push_back(argument);
 }
 

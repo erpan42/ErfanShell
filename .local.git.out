@@ -878,3 +878,12 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 56dc02a] Commit
+ 5 files changed, 19 insertions(+), 17 deletions(-)
+M	.local.git.out
+M	command.cc
+M	simpleCommand.cc
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

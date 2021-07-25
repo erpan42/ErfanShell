@@ -133,7 +133,7 @@ bool Command::builtIn(int i) {
 		}
 
 		clear();
-		Shell::prompt();
+		//Shell::prompt();
 		return true;
 	}
 	return false;
@@ -273,9 +273,9 @@ void Command::execute() {
 
 				//pipe
 				int fdpipein[2];
-				int fdpipeout[2];
 
 				pipe(fdpipein);
+				int fdpipeout[2];
 				pipe(fdpipeout);
 
 				write(fdpipein[1], cmdline, strlen(cmdline));
