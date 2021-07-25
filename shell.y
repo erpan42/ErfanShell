@@ -153,7 +153,7 @@ io_modifier_opt:
 	if(Shell::_currentCommand._errFile == NULL)
 	{
 		Shell::_currentCommand._append = 1;
-		Shell::_currentCommand._errFile = $2;
+		Shell::_currentCommand._errFile = new std::string($2->c_str());;
 		Shell::_currentCommand._err_flag++;
 	}
 	else
@@ -172,7 +172,7 @@ io_modifier_opt:
 	if(Shell::_currentCommand._errFile == NULL)
 	{
 		Shell::_currentCommand._append = 1;
-		Shell::_currentCommand._errFile = $2;
+		Shell::_currentCommand._errFile = new std::string($2->c_str());
 		Shell::_currentCommand._err_flag++;
 	}
 	else
@@ -191,7 +191,7 @@ io_modifier_opt:
 	/*error flag*/
 	if(Shell::_currentCommand._errFile == NULL)
 	{
-		Shell::_currentCommand._errFile = $2;
+		Shell::_currentCommand._errFile = new std::string($2->c_str());;
 		Shell::_currentCommand._err_flag++;
 	}
 	else
