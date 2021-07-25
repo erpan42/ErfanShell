@@ -1007,3 +1007,16 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 3b97109] Commit
+ 10 files changed, 850 insertions(+), 1178 deletions(-)
+ rewrite command.cc (67%)
+ rewrite shell.cc (77%)
+ rewrite shell.l (89%)
+ rewrite shell.y (84%)
+M	.local.git.out
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
