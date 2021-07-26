@@ -1098,3 +1098,9 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 5fbfb70] Commit
+ 10 files changed, 208 insertions(+), 112 deletions(-)
+ mode change 100755 => 100644 Makefile
+ rewrite shell.cc (76%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
