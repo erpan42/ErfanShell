@@ -1078,3 +1078,10 @@ M	shell.l
 M	shell.y
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 52ee723] Commit
+ 8 files changed, 615 insertions(+), 1006 deletions(-)
+ rewrite shell.cc (77%)
+ rewrite shell.l (89%)
+ rewrite shell.y (84%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
