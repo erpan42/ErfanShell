@@ -18,6 +18,8 @@
 
 struct Command {
 
+  int _numOfAvailableSimpleCommands;
+  int _numOfSimpleCommands;
 
   std::vector<SimpleCommand *> _simpleCommands;
   std::string * _outFile;
@@ -27,6 +29,13 @@ struct Command {
   //User Add-on
   bool _background;	//run in background or not
   int _append;	//if ">>", then _append = 1
+
+  int _out_flag;
+  int _err_flag;
+  int _in_flag;
+
+  void prompt();
+  void redirect(int i, std::string * curr);
 
   Command();
   void insertSimpleCommand( SimpleCommand * simpleCommand );
