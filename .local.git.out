@@ -1085,3 +1085,16 @@ Your branch is up to date with 'origin/master'.
  rewrite shell.y (84%)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master 3f644c0] Commit
+ 1 file changed, 7 insertions(+)
+M	.local.git.out
+M	Makefile
+M	read-line.c
+M	shell.cc
+M	shell.hh
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

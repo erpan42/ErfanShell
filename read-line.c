@@ -18,36 +18,35 @@ extern void tty_raw_mode(void);
 
 // Buffer where line is stored
 int line_length;
-char line_buffer[MAX_BUFFER_LINE];
 int current_pos;
+char line_buffer[MAX_BUFFER_LINE];
+
 // Simple history array
 // This history does not change. 
 // Yours have to be updated.
 int history_index = 0;
-// char * history [] = {
-//   "ls -al | grep x", 
-//   "ps -e",
-//   "cat read-line-example.c",
-//   "vi hello.c",
-//   "make",
-//   "ls -al | grep xxx | grep yyy"
-// };
-
+/*
+char * history [] = {
+  "ls -al | grep x", 
+  "ps -e",
+  "cat read-line-example.c",
+  "vi hello.c",
+  "make",
+  "ls -al | grep xxx | grep yyy"
+};*/
 char ** history = NULL;
-
 int history_length = sizeof(history)/sizeof(char *);
 int history_size = 10;
+
 void read_line_print_usage()
 {
   char * usage = "\n"
     " ctrl-?       Print usage\n"
     " Backspace    Deletes last character\n"
     " up arrow     See last command in the history\n"
-    " ctrl-D	Delete key at the current position\n"
-	  " ctrl-A	Move to the beginning of the line\n"
-	  " ctrl-E	Move to the end of the line\n";
-
-
+	" ctrl-D	Delete key at the current position\n"
+	" ctrl-A	Move to the beginning of the line\n"
+	" ctrl-E	Move to the end of the line\n";
   write(1, usage, strlen(usage));
 }
 

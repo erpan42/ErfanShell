@@ -1,14 +1,13 @@
 #include <cstdio>
 #include <cstdlib>
-
-#include <iostream>
 #include <string.h>
+#include <iostream>
+
 #include "simpleCommand.hh"
 
-SimpleCommand::SimpleCommand() {
+SimpleCommand::SimpleCommand() 
+{
   _arguments = std::vector<std::string *>();
-  envtrue = false;
-  tildtrue = false;
 }
 
 SimpleCommand::~SimpleCommand() {
@@ -18,14 +17,8 @@ SimpleCommand::~SimpleCommand() {
   }
 }
 
-//Environement Variable Expansion
-//Environement Variable Expansion
-std::string * SimpleCommand::envexpansion(std::string * argument) {
-	
-	return argument;
-}
-
 void SimpleCommand::insertArgument( std::string * argument ) {
+  // simply add the argument to the vector
 	int i=0;
 	char * str = strdup(argument -> c_str());
 	char * arg = strdup(argument -> c_str());
@@ -58,6 +51,25 @@ void SimpleCommand::insertArgument( std::string * argument ) {
 	_arguments.push_back(pb);
 	free(str);
 	delete argument;
+
+/*
+	//Environment variable expansion
+	char * env = expansion(arg);
+	if(env)
+		arg = strdup(env);
+
+	env = tilde(arg);
+
+	if(env) 
+		arg = strdup(env);
+
+	_arguments[ argcount ] = arg;
+
+	// Add NULL argument at the end
+	_arguments[ argcount + 1] = NULL;
+
+	argcount++;
+*/
 }
 
 // Print out the simple command

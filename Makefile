@@ -11,7 +11,7 @@ WARNFLAGS= -Wall -Wextra -pedantic
 LEX=lex -l
 YACC=yacc -y -d -t --debug
 
-EDIT_MODE_ON=yes
+EDIT_MODE_ON=no
 
 ifdef EDIT_MODE_ON
 	EDIT_MODE_OBJECTS=tty-raw-mode.o read-line.o
@@ -37,8 +37,7 @@ shell.o: shell.cc shell.hh
 	$(CC) $(CCFLAGS) $(WARNFLAGS) -c shell.cc
 
 shell: y.tab.o lex.yy.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS)
-		$(CC) $(CCFLAGS) $(WARNFLAGS) -o shell lex.yy.o y.tab.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS) -static -lfl 
-# to insert "-static -lfl" to compile Yacc and Lex 
+		$(CC) $(CCFLAGS) $(WARNFLAGS) -o shell lex.yy.o y.tab.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS) -static -lfl
 
 tty-raw-mode.o: tty-raw-mode.c
 	$(cc) $(ccFLAGS) $(WARNFLAGS) -c tty-raw-mode.c
