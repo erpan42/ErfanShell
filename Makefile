@@ -2,22 +2,26 @@
 # CS252 - Shell Project
 #
 #Use GNU compiler
+
 cc= gcc
 CC= g++
-ccFLAGS= -g -std=c11
-CCFLAGS= -g -std=c++17
+ccFLAGS= -g -std=c11 $(SANITIZE_FLAGS)
+CCFLAGS= -g -std=c++17 $(SANITIZE_FLAGS)
 WARNFLAGS= -Wall -Wextra -pedantic
 
 LEX=lex -l
 YACC=yacc -y -d -t --debug
 
-EDIT_MODE_ON=no
+EDIT_MODE_ON=yes
 
 ifdef EDIT_MODE_ON
 	EDIT_MODE_OBJECTS=tty-raw-mode.o read-line.o
 endif
 
 all: git-commit shell
+
+sanitize: SANITIZE_FLAGS=-fsanitize=address -fsanitize=leak -fno-omit-frame-pointer
+sanitize: all
 
 lex.yy.o: shell.l 
 	$(LEX) -o lex.yy.cc shell.l
@@ -37,7 +41,7 @@ shell.o: shell.cc shell.hh
 	$(CC) $(CCFLAGS) $(WARNFLAGS) -c shell.cc
 
 shell: y.tab.o lex.yy.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS)
-		$(CC) $(CCFLAGS) $(WARNFLAGS) -o shell lex.yy.o y.tab.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS) -static -lfl
+		$(CC) $(CCFLAGS) $(WARNFLAGS) -o shell lex.yy.o y.tab.o shell.o command.o simpleCommand.o $(EDIT_MODE_OBJECTS)
 
 tty-raw-mode.o: tty-raw-mode.c
 	$(cc) $(ccFLAGS) $(WARNFLAGS) -c tty-raw-mode.c

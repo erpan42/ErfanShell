@@ -2,6 +2,7 @@
 #define shell_hh
 
 #include "command.hh"
+#include <vector>
 
 struct Shell {
 
@@ -9,7 +10,9 @@ struct Shell {
 
   static Command _currentCommand;
 
-  //void expandWildcardsIfNecessary(string * arg);
+  static std::vector<int> _bgPIDs;
+
+  static bool _srcCmd;
 };
 
 #endif

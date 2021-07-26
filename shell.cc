@@ -1,85 +1,112 @@
 #include <cstdio>
-#include <stdio.h>
+#include <unistd.h>
 #include <signal.h>
 #include <string.h>
-#include <stdlib.h>
-#include "shell.hh"
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/resource.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <limits.h>
+#include "shell.hh"
+#include "y.tab.hh"
 
-void yyrestart(FILE * file);
+#ifndef YY_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k.
+ * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
+ * Ditto for the __ia64__ case accordingly.
+ */
+#define YY_BUF_SIZE 32768
+#else
+#define YY_BUF_SIZE 16384
+#endif /* __ia64__ */
+#endif
+
+#ifndef YY_TYPEDEF_YY_BUFFER_STATE
+#define YY_TYPEDEF_YY_BUFFER_STATE
+typedef struct yy_buffer_state *YY_BUFFER_STATE;
+#endif
+
+void yyrestart(FILE * input_file );
 int yyparse(void);
-char * dir;
+void yypush_buffer_state(YY_BUFFER_STATE buffer);
+void yypop_buffer_state();
+YY_BUFFER_STATE yy_create_buffer(FILE * file, int size);
+
 
 void Shell::prompt() {
-//printf("in prompt");
-  if(isatty(0))
-	printf("myshell>");
-//printf("after prompt");
-  fflush(stdout);
+  if ( isatty(0) & !_srcCmd ){
+    char * pPrompt = getenv("PROMPT");
+    if (pPrompt != NULL) printf("%s ", pPrompt);
+  	else printf("myshell>");
+    fflush(stdout);
+  }
 }
 
-extern "C" void disp( int sig )
+extern "C" void sigIntHandler(int sig)
 {
-	fprintf( stderr, "\nsig:%d	Exit\n", sig);
-	Shell::prompt();
+  if (sig == SIGINT) {
+  	Shell::_currentCommand.clear();
+  	printf("\n");
+  	Shell::prompt();
+  }
+
+  if (sig == SIGCHLD) {
+  	pid_t pid = waitpid(-1, NULL, WNOHANG);
+  	for (unsigned i=0; i<Shell::_bgPIDs.size(); i++) {
+  		if (pid == Shell::_bgPIDs[i]) {
+  			printf("[%d] exited\n", pid);
+  			Shell::_bgPIDs.erase(Shell::_bgPIDs.begin()+i);
+  			break;
+  		}
+  	}
+  }
 }
 
-extern "C" void disp2( int sig )
-{
-	wait3(0,0,NULL);
-	while(waitpid(-1, NULL, WNOHANG) > 0)
-	{
-	}
+void source(void) {
+  std::string s = ".shellrc";
+  FILE * in = fopen(s.c_str(), "r");
+
+  if (!in) {
+    return;
+  }
+
+  yypush_buffer_state(yy_create_buffer(in, YY_BUF_SIZE));
+  Shell::_srcCmd = true;
+  yyparse();
+  yypop_buffer_state();
+  fclose(in);
+  Shell::_srcCmd = false;
 }
 
-int main() {
-	struct sigaction sa;
-	sa.sa_handler = disp;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+int main(int argc, char **argv) {
+  struct sigaction sa;
+  sa.sa_handler = sigIntHandler;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_RESTART;
+  
+  source();
+  
+  std::string s = std::to_string(getpid());
+  setenv("$", s.c_str(), 1);
+  
+  char abs_path[256];
+  realpath(argv[0], abs_path);
+  setenv("SHELL", abs_path, 1);
 
-	if(sigaction(SIGINT, &sa, NULL)){
-		perror("sigaction");
-		exit(2);
-	}
-
-	struct sigaction sa2;
-	sa2.sa_handler = disp2;
-	sigemptyset(&sa2.sa_mask);
-	sa2.sa_flags = SA_RESTART;
-
-	if(sigaction(SIGCHLD, &sa2, NULL)){
-		perror("sigaction");
-		exit(2);
-	}
-
-	//Source shellrc
-	FILE * fd = fopen(".shellrc", "r");
-	if(fd)
-	{
-		yyrestart(fd);
-		yyparse();
-		yyrestart(stdin);
-		fclose(fd);
-	}
-	else
-		Shell::prompt();
-
-//	printf("before pwd");
-	int size = sizeof(char*)*(strlen(getenv("PWD")) +1+strlen(getenv("_")));
-	dir = (char *)malloc(size);
-	strncpy(dir, getenv("PWD"), size);
-	strcat(dir, "/");
-	strcat(dir, getenv("_"));
-//	printf("after pwd");
-
-	Shell::prompt();
-//	printf("before yyparse");
-	yyparse();
+  Shell::_srcCmd = false;
+  Shell::prompt();
+  if (sigaction(SIGINT, &sa, NULL)) {
+    perror("sigaction");
+    exit(2);
+  }
+  if (sigaction(SIGCHLD, &sa, NULL)) {
+    perror("sigaction");
+    exit(2);
+  }
+  yyrestart(stdin);
+  yyparse();
 }
 
 Command Shell::_currentCommand;
+std::vector<int> Shell::_bgPIDs;
+bool Shell::_srcCmd;
