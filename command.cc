@@ -33,6 +33,7 @@ Command::Command() {
 
     _background = false;
 	_append = 0;
+	_out_flag = 0;
 }
 
 void Command::insertSimpleCommand( SimpleCommand * simpleCommand ) {

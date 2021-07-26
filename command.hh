@@ -27,6 +27,10 @@ struct Command {
   //User Add-on
   bool _background;	//run in background or not
   int _append;	//if ">>", then _append = 1
+  
+  int _out_flag;
+  int _err_flag;
+  int _in_flag;
 
   Command();
   void insertSimpleCommand( SimpleCommand * simpleCommand );
