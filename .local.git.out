@@ -1040,3 +1040,11 @@ M	command.hh
 M	simpleCommand.cc
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 1b56b60] Commit
+ 5 files changed, 301 insertions(+), 251 deletions(-)
+ rewrite simpleCommand.cc (62%)
+M	.local.git.out
+M	command.cc
+M	read-line.c
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

@@ -17,10 +17,14 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
+#include <sys/types.h>
+#include <fcntl.h>
 #include <fstream>
-#include "command.hh"
-#include "shell.hh"
+
+#include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <string>
 #include <vector>
 
 #include "command.hh"
