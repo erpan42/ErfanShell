@@ -1048,3 +1048,14 @@ M	command.cc
 M	read-line.c
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 35ca3b3] Commit
+ 4 files changed, 193 insertions(+), 22 deletions(-)
+M	.local.git.out
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
