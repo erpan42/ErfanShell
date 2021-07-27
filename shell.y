@@ -104,7 +104,7 @@ argument:
     std::sort(_sortArgument.begin(), _sortArgument.end(), cmpfunction);
     for (auto a: _sortArgument) {
       std::string * argToInsert = new std::string(a);
-      Command::_currentSimpleCommand->insertArgument(argToInsert$1->c_str());
+      Command::_currentSimpleCommand->insertArgument((char*)argToInsert->c_str());
     }
     _sortArgument.clear();
     //if (!wildCard) Command::_currentSimpleCommand->insertArgument((char*)$1->c_str());
