@@ -1457,3 +1457,11 @@ Your branch is up to date with 'origin/master'.
  2 files changed, 11 insertions(+), 6 deletions(-)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master c267f77] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+Your branch is up to date with 'origin/master'.
