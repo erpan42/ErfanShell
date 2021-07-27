@@ -28,13 +28,7 @@ extern "C" void zombie(int sig) {
 	int pid = wait3(0, 0, NULL);
 
 	//printf("[%d] exited.\n", pid);
-	for (unsigned i=0; i<Shell::_bgPIDs.size(); i++) {
-  		if (pid == Shell::_bgPIDs[i]) {
-  			printf("[%d] exited\n", pid);
-  			Shell::_bgPIDs.erase(Shell::_bgPIDs.begin()+i);
-  			break;
-  		}
-  	}
+	while (waitpid(-1, NULL, WNOHANG) > 0) {};
 }
 
 int main() {

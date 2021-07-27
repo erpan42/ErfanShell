@@ -1358,3 +1358,11 @@ Your branch is up to date with 'origin/master'.
  2 files changed, 16 insertions(+), 1 deletion(-)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master bf1198a] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	shell.cc
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
