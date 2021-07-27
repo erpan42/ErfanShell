@@ -83,7 +83,7 @@ void source(void) {
 int main(int argc, char **argv) {
 	
 	struct sigaction sigstsa;
-  	sigstsa.sa_handler = sigIntHandler;
+  	sigstsa.sa_handler = ctrlC;
   	sigemptyset(&sigstsa.sa_mask);
 	sigstsa.sa_flags = SA_RESTART;
 
@@ -102,6 +102,7 @@ int main(int argc, char **argv) {
 		perror("sigaction");
 		exit(2);
 	}
+	sigstsa.sa_handler = zombie;
 	if (sigaction(SIGCHLD, &sigstsa, NULL)) {
 		perror("sigaction");
 		exit(2);
