@@ -54,14 +54,7 @@ extern "C" void ctrlC(int sig) {
 
 // Only one msg for the same PID
 extern "C" void zombie(int sig) {
-	// pid_t pid = waitpid(-1, NULL, WNOHANG);
-  	// for (unsigned i=0; i<Shell::_bgPIDs.size(); i++) {
-  	// 	if (pid == Shell::_bgPIDs[i]) {
-  	// 		printf("[%d] exited\n", pid);
-  	// 		Shell::_bgPIDs.erase(Shell::_bgPIDs.begin()+i);
-  	// 		break;
-  	// 	}
-  	// }
+	
 	int pid = wait3(0, 0, NULL);
 
 	//printf("[%d] exited.\n", pid);
