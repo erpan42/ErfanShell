@@ -298,7 +298,7 @@ void Command::execute() {
             } 
             else {
                 //Use default output
-                fdout = dup(tmpout);
+                fdout = dup(dfltout);
             }
 
             if ( _errFile ) {
@@ -311,7 +311,7 @@ void Command::execute() {
                 }
             }
             else {
-                fderr = dup(tmperr);
+                fderr = dup(dflterr);
             }
             dup2(fderr, 2);
             close(fderr);
