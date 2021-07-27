@@ -1196,3 +1196,12 @@ M	.local.git.out
 M	Makefile
 M	shell.y
 Your branch is up to date with 'origin/master'.
+[master 4409861] Commit
+ 3 files changed, 13 insertions(+), 153 deletions(-)
+M	.local.git.out
+M	Makefile
+M	command.cc
+M	command.hh
+M	simpleCommand.cc
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
