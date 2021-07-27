@@ -1296,3 +1296,12 @@ M	shell.y
 M	simpleCommand.cc
 M	simpleCommand.hh
 Your branch is up to date with 'origin/master'.
+[master 4a40beb] Commit
+ 10 files changed, 596 insertions(+), 708 deletions(-)
+ rewrite shell.l (87%)
+ rewrite shell.y (80%)
+M	.local.git.out
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
