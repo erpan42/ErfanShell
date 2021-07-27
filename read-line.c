@@ -11,13 +11,15 @@
 #include <unistd.h>
 
 #define MAX_BUFFER_LINE 2048
+#define HISTORY_SIZE 16
 
 extern void tty_raw_mode(void);
 
 // Buffer where line is stored
 int line_length;
-int right_side_length;
 char line_buffer[MAX_BUFFER_LINE];
+char right_side_buffer[MAX_BUFFER_LINE];
+int right_side_length;
 
 // Simple history array
 // This history does not change. 

@@ -1,4 +1,4 @@
-#ifndef simplecommand_hh
+#ifndef simplcommand_hh
 #define simplecommand_hh
 
 #include <string>

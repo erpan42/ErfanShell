@@ -32,26 +32,29 @@ void yypush_buffer_state(YY_BUFFER_STATE buffer);
 void yypop_buffer_state();
 YY_BUFFER_STATE yy_create_buffer(FILE * file, int size);
 
-
 void Shell::prompt() {
-  if ( isatty(0) & !_srcCmd ){
-    char * pPrompt = getenv("PROMPT");
-    if (pPrompt != NULL) printf("%s ", pPrompt);
-  	else printf("myshell>");
-    fflush(stdout);
-  }
+
+	//if input is from terminal
+	if ( isatty(0) & !_srcCmd ){
+	    char * pPrompt = getenv("PROMPT");
+	    if (pPrompt != NULL) printf("%s ", pPrompt);
+	  	else printf("myshell>");
+	    fflush(stdout);
+	}
 }
 
-extern "C" void sigIntHandler(int sig)
-{
-  if (sig == SIGINT) {
-  	Shell::_currentCommand.clear();
-  	printf("\n");
-  	Shell::prompt();
-  }
+//part2.1 when keydown ctrl+C, go to nextline in shell. nextline is myshell>>myshell>>
 
-  if (sig == SIGCHLD) {
-  	pid_t pid = waitpid(-1, NULL, WNOHANG);
+extern "C" void ctrlC(int sig) {
+	//fflush(stdin);
+	Shell::_currentCommand.clear();
+	printf("\n");
+	Shell::prompt();
+}
+
+// Only one msg for the same PID
+extern "C" void zombie(int sig) {
+	pid_t pid = waitpid(-1, NULL, WNOHANG);
   	for (unsigned i=0; i<Shell::_bgPIDs.size(); i++) {
   		if (pid == Shell::_bgPIDs[i]) {
   			printf("[%d] exited\n", pid);
@@ -59,7 +62,6 @@ extern "C" void sigIntHandler(int sig)
   			break;
   		}
   	}
-  }
 }
 
 void source(void) {
@@ -79,32 +81,35 @@ void source(void) {
 }
 
 int main(int argc, char **argv) {
-  struct sigaction sa;
-  sa.sa_handler = sigIntHandler;
-  sigemptyset(&sa.sa_mask);
-  sa.sa_flags = SA_RESTART;
-  
-  source();
-  
-  std::string s = std::to_string(getpid());
-  setenv("$", s.c_str(), 1);
-  
-  char abs_path[256];
-  realpath(argv[0], abs_path);
-  setenv("SHELL", abs_path, 1);
+	
+	struct sigaction sigstsa;
+  	sigstsa.sa_handler = ctrlC;
+  	sigemptyset(&sigstsa.sa_mask);
+	sigstsa.sa_flags = SA_RESTART;
 
-  Shell::_srcCmd = false;
-  Shell::prompt();
-  if (sigaction(SIGINT, &sa, NULL)) {
-    perror("sigaction");
-    exit(2);
-  }
-  if (sigaction(SIGCHLD, &sa, NULL)) {
-    perror("sigaction");
-    exit(2);
-  }
-  yyrestart(stdin);
-  yyparse();
+	source();
+
+	std::string s = std::to_string(getpid());
+	setenv("$", s.c_str(), 1);
+
+	char abs_path[256];
+	realpath(argv[0], abs_path);
+	setenv("SHELL", abs_path, 1);
+
+	Shell::_srcCmd = false;
+	Shell::prompt();
+	if (sigaction(SIGINT, &sigstsa, NULL)) {
+		perror("sigaction");
+		exit(2);
+	}
+	sigstsa.sa_handler = zombie;
+	if (sigaction(SIGCHLD, &sigstsa, NULL)) {
+		perror("sigaction");
+		exit(2);
+	}
+	yyrestart(stdin);
+
+	yyparse();
 }
 
 Command Shell::_currentCommand;
