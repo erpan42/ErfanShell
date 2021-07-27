@@ -1184,3 +1184,9 @@ Your branch is up to date with 'origin/master'.
  rewrite shell.y (80%)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master 017db76] Commit
+ 1 file changed, 10 insertions(+)
+M	.local.git.out
+M	shell.y
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
