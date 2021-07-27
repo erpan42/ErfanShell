@@ -1217,3 +1217,15 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master a3d20f9] Commit
+ 10 files changed, 223 insertions(+), 108 deletions(-)
+ mode change 100755 => 100644 Makefile
+ create mode 100644 file1.cc
+ rewrite simpleCommand.cc (75%)
+M	.local.git.out
+M	command.cc
+M	command.hh
+M	test-shell/file-list-1
+M	test-shell/file-list-2
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
