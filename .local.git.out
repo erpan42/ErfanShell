@@ -1473,3 +1473,10 @@ Your branch is up to date with 'origin/master'.
  1 file changed, 4 insertions(+)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master ca86491] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
