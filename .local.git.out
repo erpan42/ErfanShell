@@ -1347,3 +1347,10 @@ M	.local.git.out
 M	shell.cc
 Your branch is ahead of 'origin/master' by 2 commits.
   (use "git push" to publish your local commits)
+[master 04f78b8] Commit
+ 3 files changed, 82 insertions(+), 117 deletions(-)
+ rewrite shell.cc (85%)
+ copy shell.cc => shell11.cc (100%)
+M	.local.git.out
+M	shell.cc
+Your branch is up to date with 'origin/master'.
