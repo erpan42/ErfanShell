@@ -1438,3 +1438,9 @@ M	simpleCommand.hh
 D	simpleCommand1.cc
 D	simpleCommand1.hh
 Your branch is up to date with 'origin/master'.
+[master 9c8a32b] Commit
+ 3 files changed, 8 insertions(+)
+ rename simpleCommand1.cc => simpleCommand.cc (100%)
+ rename simpleCommand1.hh => simpleCommand.hh (100%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
