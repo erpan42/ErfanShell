@@ -1325,3 +1325,7 @@ M	simpleCommand.cc
 M	simpleCommand.hh
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master a22198c] Commit
+ 5 files changed, 198 insertions(+), 6 deletions(-)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
