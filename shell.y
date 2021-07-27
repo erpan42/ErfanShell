@@ -97,7 +97,7 @@ argument_list:
 argument:
   WORD {
     //printf("   Yacc: insert argument \"%s\"\n", $1->c_str());
-    //Command::_currentSimpleCommand->insertArgument( $1->c_str() );
+    //Command::_currentSimpleCommand->insertArgument( (char*)$1->c_str() );
     wildCard = false;
     char *p = (char *)"";
     expandWildcard(p, (char *)$1->c_str());
@@ -107,7 +107,7 @@ argument:
       Command::_currentSimpleCommand->insertArgument(argToInsert$1->c_str());
     }
     _sortArgument.clear();
-    //if (!wildCard) Command::_currentSimpleCommand->insertArgument($1->c_str());
+    //if (!wildCard) Command::_currentSimpleCommand->insertArgument((char*)$1->c_str());
   }
   ;
 
@@ -119,7 +119,7 @@ command_word:
       exit(1);
     }
     Command::_currentSimpleCommand = new SimpleCommand();
-    Command::_currentSimpleCommand->insertArgument( $1->c_str() );
+    Command::_currentSimpleCommand->insertArgument( (char*)$1->c_str() );
   }
   ;
 
@@ -208,7 +208,7 @@ void expandWildcardsIfNecessary(std::string * arg) {
   std::string path;
   if (strchr(arg_c,'?')==NULL & strchr(arg_c,'*')==NULL) {
     //printf("No '?' or '*' was found\n");
-    Command::_currentSimpleCommand->insertArgument(arg->c_str());
+    Command::_currentSimpleCommand->insertArgument((char*)arg->c_str());
     return;
   }
   DIR * dir;
@@ -274,7 +274,7 @@ void expandWildcardsIfNecessary(std::string * arg) {
   
   for (auto a: sortArgument) {
     std::string * argToInsert = new std::string(a);
-    Command::_currentSimpleCommand->insertArgument(argToInsert->c_str());
+    Command::_currentSimpleCommand->insertArgument((char*)argToInsert->c_str());
   }
 
   sortArgument.clear();
