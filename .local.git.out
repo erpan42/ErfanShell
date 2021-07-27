@@ -1174,3 +1174,13 @@ M	simpleCommand.cc
 M	simpleCommand.hh
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master da5bac8] Commit
+ 12 files changed, 1119 insertions(+), 1322 deletions(-)
+ mode change 100644 => 100755 Makefile
+ rewrite command.cc (73%)
+ rewrite read-line.c (65%)
+ rewrite shell.cc (94%)
+ rewrite shell.l (87%)
+ rewrite shell.y (80%)
+M	.local.git.out
+Your branch is up to date with 'origin/master'.
