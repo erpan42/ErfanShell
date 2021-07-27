@@ -11,11 +11,12 @@
 #include <unistd.h>
 
 #define MAX_BUFFER_LINE 2048
-#define HISTORY_SIZE 16
+
 extern void tty_raw_mode(void);
 
 // Buffer where line is stored
 int line_length;
+int right_side_length;
 char line_buffer[MAX_BUFFER_LINE];
 
 // Simple history array
@@ -25,7 +26,14 @@ int history_index = 0;
 int history_index_rev;
 int history_full = 0;
 char * history[HISTORY_SIZE];
-
+/*char * history [] = {
+  "ls -al | grep x", 
+  "ps -e",
+  "cat read-line-example.c",
+  "vi hello.c",
+  "make",
+  "ls -al | grep xxx | grep yyy"
+};*/
 int history_length = HISTORY_SIZE;
 
 void read_line_print_usage()
@@ -68,7 +76,7 @@ char * read_line() {
 
       // If max number of character reached return.
       if (line_length==MAX_BUFFER_LINE-2) break; 
-
+    
       // add char to buffer.
       line_buffer[line_length]=ch;
       line_length++;
@@ -180,7 +188,7 @@ char * read_line() {
       // Write a space to erase the last character read
       ch = ' ';
       write(1,&ch,1);
-
+      
       // Go back one character
       for (int i=0; i<right_side_length+1; i++) {
         char c = 8;
