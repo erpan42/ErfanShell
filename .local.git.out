@@ -1260,3 +1260,16 @@ Your branch is up to date with 'origin/master'.
 M	.local.git.out
 M	read-line.c
 Your branch is up to date with 'origin/master'.
+[master 4196a27] Commit
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+M	.local.git.out
+M	Makefile
+M	command.cc
+M	command.hh
+M	read-line.c
+M	shell.cc
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+Your branch is up to date with 'origin/master'.
