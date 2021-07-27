@@ -15,7 +15,7 @@ void Shell::prompt() {
 	fflush(stdout);
 }
 
-//part2 when keydown ctrl+C, go to nextline in shell. nextline is myshell>>myshell>>
+//part2.1 when keydown ctrl+C, go to nextline in shell. nextline is myshell>>myshell>>
 
 extern "C" void ctrlC(int sig) {
 	//fflush(stdin);
@@ -54,7 +54,7 @@ int main() {
 
 		if (sigaction(SIGCHLD, &sigZombie, NULL)) {
 			perror("sigaction");
-			exit(-1);
+			exit(2);
 		}
 	//}
 	//Create .shellrc
