@@ -1159,3 +1159,18 @@ Your branch is up to date with 'origin/master'.
  1 file changed, 9 insertions(+)
 M	.local.git.out
 Your branch is up to date with 'origin/master'.
+[master ff0692a] Commit
+ 1 file changed, 4 insertions(+)
+M	.local.git.out
+M	Makefile
+M	command.cc
+M	command.hh
+M	read-line.c
+M	shell.cc
+M	shell.hh
+M	shell.l
+M	shell.y
+M	simpleCommand.cc
+M	simpleCommand.hh
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.

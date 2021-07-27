@@ -16,19 +16,17 @@
 
 #include <cstdio>
 #include <cstdlib>
-
+#include <cstring>
 #include <iostream>
+#include <fstream>
+#include "command.hh"
+#include "shell.hh"
+#include <vector>
 
 #include "command.hh"
 #include "shell.hh"
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <fcntl.h> 
-#include <errno.h>
-#include <string.h>
-#include <string>
-#include <stdlib.h>
+using namespace std;
+extern char **environ;
 
 
 Command::Command() {
@@ -38,8 +36,10 @@ Command::Command() {
     _outFile = NULL;
     _inFile = NULL;
     _errFile = NULL;
+
     _background = false;
-    _append = false;
+	_append = 0;
+	_out_flag = 0;
 }
 
 void Command::insertSimpleCommand( SimpleCommand * simpleCommand ) {
@@ -73,31 +73,32 @@ void Command::clear() {
     _errFile = NULL;
 
     _background = false;
+	_append = 0;
 }
 
 void Command::print() {
-    printf("\n\n");
-    printf("              COMMAND TABLE                \n");
-    printf("\n");
-    printf("  #   Simple Commands\n");
-    printf("  --- ----------------------------------------------------------\n");
+    // printf("\n\n");
+    // printf("              COMMAND TABLE                \n");
+    // printf("\n");
+    // printf("  #   Simple Commands\n");
+    // printf("  --- ----------------------------------------------------------\n");
 
-    int i = 0;
-    // iterate over the simple commands and print them nicely
-    for ( auto & simpleCommand : _simpleCommands ) {
-        printf("  %-3d ", i++ );
-        simpleCommand->print();
-    }
+    // int i = 0;
+    // // iterate over the simple commands and print them nicely
+    // for ( auto & simpleCommand : _simpleCommands ) {
+    //     printf("  %-3d ", i++ );
+    //     simpleCommand->print();
+    // }
 
-    printf( "\n\n" );
-    printf( "  Output       Input        Error        Background\n" );
-    printf( "  ------------ ------------ ------------ ------------\n" );
-    printf( "  %-12s %-12s %-12s %-12s\n",
-            _outFile?_outFile->c_str():"default",
-            _inFile?_inFile->c_str():"default",
-            _errFile?_errFile->c_str():"default",
-            _background?"YES":"NO");
-    printf( "\n\n" );
+    // printf( "\n\n" );
+    // printf( "  Output       Input        Error        Background\n" );
+    // printf( "  ------------ ------------ ------------ ------------\n" );
+    // printf( "  %-12s %-12s %-12s %-12s\n",
+    //         _outFile?_outFile->c_str():"default",
+    //         _inFile?_inFile->c_str():"default",
+    //         _errFile?_errFile->c_str():"default",
+    //         _background?"YES":"NO");
+    // printf( "\n\n" );
 }
 
 void Command::redirect(int i, std::string * curr) {
@@ -127,195 +128,289 @@ void Command::redirect(int i, std::string * curr) {
     }
 }
 
-void Command::execute() {
-    // Don't do anything if there are no simple commands
-    if ( _simpleCommands.size() == 0 ) {
-        Shell::prompt();
-        return;
-    }
+bool Command::builtIn(int i) {
+	
+	//setenv
+	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "setenv") == 0 ) {
+		if (setenv(_simpleCommands[i]->_arguments[1]->c_str(), _simpleCommands[i]->_arguments[2]->c_str(), 1)) {
+			perror("setenv");
+		}
+		clear();
+		Shell::prompt();
+		return true;
+	}
+	//unsetenv
+	if( strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "unsetenv") == 0 ) {
+		if (unsetenv(_simpleCommands[i]->_arguments[1]->c_str())) {
+			perror("unsetenv");
+		}
+		clear();
+		Shell::prompt();
+		return true;
+	}
 
-    // Print contents of Command data structure
-    //print();
+	//cd
+	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "cd") == 0) {
 
-    // exit myshell
-    std::string* cmd = _simpleCommands[0]->_arguments[0];
-    if ( !strcmp(cmd->c_str(),"exit") ) {
-            printf( "Good bye!!\n");
-        exit(1);
-    }
+		int error;
 
-    // set the environment variable
-    if ( !strcmp(cmd->c_str(),"setenv") ) {
-        if ( _simpleCommands[0]->_arguments.size() != 3 ) {
-            fprintf(stderr, "setenv should take two arguments\n");
-            return;
-        }
-        const char * A = _simpleCommands[0]->_arguments[1]->c_str();
-        const char * B = _simpleCommands[0]->_arguments[2]->c_str();
-        setenv(A, B, 1);
-        clear();
-        Shell::prompt();
-        return;
-    }
+		if (_simpleCommands[i]->_arguments.size() == 1) {	//if only "cd", then go HOME
+			error = chdir(getenv("HOME"));
+			
+		}else {
 
-    // unset the environment varibale
-    if ( !strcmp(cmd->c_str(),"unsetenv") ) {
-        const char * A = _simpleCommands[0]->_arguments[1]->c_str();
-        unsetenv(A);
-        clear();
-        Shell::prompt();
-        return;
-    }
+			error = chdir(_simpleCommands[i]->_arguments[1]->c_str());
+		}
 
-    // change directory
-    if ( !strcmp(cmd->c_str(),"cd") ) {
-        if (_simpleCommands[0]->_arguments.size()==1) {
-            chdir(getenv("HOME"));
-        } else {
-            const char * path = _simpleCommands[0]->_arguments[1]->c_str();
-            chdir(path);
-        }
-        clear();
-        Shell::prompt();
-        return;
-    }
+		if (error < 0) {	//if error
+			perror("cd");
+		}
 
-    //save in/out
-    int tmpin = dup(0);
-    int tmpout = dup(1);
-    int tmperr = dup(2);
-    int numsimplecommands = _simpleCommands.size();
-    
-    // set the initial input
-    int fdin;
-    if ( _inFile ) {
-        const char* infile = _inFile->c_str();
-        fdin = open(infile, O_RDONLY);
-        if (fdin < 0) {
-            fprintf(stderr, "/bin/sh: 1: cannot open %s: No such file\n", infile);
-            Shell::prompt();
-            clear();
-            return;
-        }
-    } 
-    else {
-        //Use default input
-        fdin = dup(tmpin);
-    }
-    // Add execution here
-    int ret;
-    int fdout;
-    int fderr;
-    for (int i=0; i<numsimplecommands; i++) {
-        //redirect input
-        // Setup i/o redirection
-        dup2(fdin, 0);
-        close(fdin);
-        //setup output
-        if (i == numsimplecommands-1) {
-            //Last simple command
-            if ( _outFile ) {
-                const char* outfile = _outFile->c_str();
-                if ( _append ){
-                    fdout = open(outfile, O_CREAT|O_WRONLY|O_APPEND, 0664);
-                }
-                else {
-                    fdout = open(outfile, O_CREAT|O_WRONLY|O_TRUNC, 0664);
-                }
-            } 
-            else {
-                //Use default output
-                fdout = dup(tmpout);
-            }
-
-            if ( _errFile ) {
-                const char* errfile = _errFile->c_str();
-                if ( _append ){
-                    fderr = open(errfile, O_CREAT|O_WRONLY|O_APPEND, 0664);
-                }
-                else {
-                    fderr = open(errfile, O_CREAT|O_WRONLY|O_TRUNC, 0664);
-                }
-            }
-            else {
-                fderr = dup(tmperr);
-            }
-            dup2(fderr, 2);
-            close(fderr);
-            int n = _simpleCommands[i]->_arguments.size();
-            char * c = strdup(_simpleCommands[i]->_arguments[n-1]->c_str());
-            setenv("_", c, 1);
-        }
-        else {
-            //Not last simple command
-            //create pipe
-            int fdpipe[2];
-            pipe(fdpipe);
-            fdout = fdpipe[1];
-            fdin = fdpipe[0];
-        }
-        //Redirect output
-        dup2(fdout, 1);
-        close(fdout);
-
-        //Create child process
-        // For every simple command fork a new process
-        ret = fork();
-        if (ret==0) {
-            // printenv function call
-            if (!strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "printenv")) {
-                char **p = environ;
-                while (*p!=NULL) {
-                    printf("%s\n", *p);
-                    p++;
-                }
-                exit(0);
-            }
-            // and call exec
-            const char * command = _simpleCommands[i]->_arguments[0]->c_str();
-            int argnum = _simpleCommands[i]->_arguments.size();
-            char ** args = new char*[argnum+1];
-            for (int j=0; j<argnum; j++) {
-                args[j] = (char *)_simpleCommands[i]->_arguments[j]->c_str();
-            }
-            args[argnum] = NULL;
-            execvp(command, args);
-            perror("execvp");
-            exit(1);
-        } 
-        else if (ret < 0) {
-            perror("fork");
-            return;
-        }   
-    }
-    
-    //restore in/out defaults
-    dup2(tmpin,0);
-    dup2(tmpout,1);
-    dup2(tmperr,2);
-    close(tmpin);
-    close(tmpout);
-    close(tmperr);
-
-    if (!_background) {
-        // Wait for last command
-        int status;
-        waitpid(ret, &status, 0);
-        std::string s = std::to_string(WEXITSTATUS(status));
-        setenv("?", s.c_str(), 1);
-        char * pError = getenv("ON_ERROR");
-        if (pError != NULL && WEXITSTATUS(status) != 0) printf("%s\n", pError);
-    } else {
-        std::string s = std::to_string(ret);
-        setenv("!", s.c_str(), 1);
-        Shell::_bgPIDs.push_back(ret);
-    }
-
-    // Clear to prepare for next command
-    clear();
-
-    // Print new prompt
-    Shell::prompt();
+		clear();
+		//Shell::prompt();
+		return true;
+	}
+	return false;
 }
+
+bool Command::builtIn2(int i) {
+	//printenv in child process
+	if (strcmp(_simpleCommands[i]->_arguments[0]->c_str(), "printenv") == 0) {
+		char ** envvar = environ;
+
+		int i = 0;
+		while (envvar[i] != NULL) {
+			printf("%s\n", envvar[i]);
+			i++;
+		}
+		return true;
+	}
+
+	return false;
+}
+
+void Command::execute() {
+
+	//printf("_simpleCommands.size is %zu", _simpleCommands.size());
+	// Don't do anything if there are no simple commands
+	if (_simpleCommands.size() == 0) {
+		if(isatty(0))
+			Shell::prompt();
+		return;
+	}
+
+
+	if( strcmp(_simpleCommands[0]->_arguments[0]->c_str(),"exit") == 0){
+		//printf("Exiting\n");
+		exit(0);
+	}
+
+	if( strcmp(_simpleCommands[0]->_arguments[0]->c_str(),"setenv") == 0){
+		 int env = setenv(_simpleCommands[0]->_arguments[1]->c_str(),_simpleCommands[0]->_arguments[2]->c_str(),1);
+		 if(env != 0)
+			 perror("setenv");
+		clear();
+		Shell::prompt();
+		return;
+	}
+
+	if( strcmp(_simpleCommands[0]->_arguments[0]->c_str(),"unsetenv") == 0){
+		int env = unsetenv(_simpleCommands[0]->_arguments[1]->c_str());
+		if(env != 0)
+			perror("unsetenv");
+		clear();
+		Shell::prompt();
+		return;
+	}
+
+	if( strcmp(_simpleCommands[0]->_arguments[0]->c_str(),"cd") == 0){
+		if(_simpleCommands[0]->_arguments[1])
+		{
+			//printf("dir=%s\n\n", _simpleCommands[0]->_arguments[1]->c_str());
+			int ret;
+			if(strncmp(_simpleCommands[0]->_arguments[1]->c_str(),"${HOME}",7)==0)
+			{
+				char* dir = getenv("HOME");
+				ret = chdir(dir);
+				//str = str.substr(1,str.length()-2);
+				//chdir((_simpleCommands[0]->_arguments[1])->substr(9).c_str());
+			}
+			else
+				ret = chdir(_simpleCommands[0]->_arguments[1]->c_str());
+			if(ret != 0)
+				//perror("chdir");
+				fprintf(stderr,"cd: can't cd to %s\n",_simpleCommands[0]->_arguments[1]->c_str());
+		}
+		else
+		{
+			char* dir = getenv("HOME");
+			chdir(dir);
+		}
+		clear();
+		Shell::prompt();
+		return;
+	}
+	// Print contents of Command data structure
+	//print();
+
+	// Add execution here
+	// For every simple command fork a new process
+	// Setup i/o redirection
+	// and call exec
+	int tmpin = dup(0);
+	int tmpout = dup(1);
+	int tmperr = dup(2);
+
+	int fdin;
+	if(_inFile)
+		fdin = open(_inFile->c_str(), O_RDONLY, 0666);
+	else
+		fdin = dup(tmpin);
+
+	int ret;
+	int fdout;
+	int fderr;
+	int proc;
+	int status;
+
+	for (unsigned int i=0;i<_simpleCommands.size(); i++) {
+
+		
+
+
+		//redirect input
+		dup2(fdin, 0);
+		close(fdin);
+
+		//setup output
+		if(i == _simpleCommands.size()-1)
+		{
+			if (_append)
+				if (_outFile)
+					fdout = open(_outFile->c_str(), O_WRONLY | O_APPEND, 0666);
+				else
+					fdout = dup(tmpout);
+			else
+				if (_outFile)
+					fdout = open(_outFile->c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0666);
+				else
+					fdout = dup(tmpout);
+			if(_errFile)
+				if(!_append)
+					fderr = open(_errFile->c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0666);
+				else
+					fderr = open(_errFile->c_str(), O_WRONLY | O_APPEND, 0666);
+			else
+				fderr = dup(tmperr);
+		}else
+		{
+			int fdpipe[2];
+			pipe(fdpipe);
+			fdout = fdpipe[1];
+			fdin = fdpipe[0];
+			fderr = dup(tmperr);
+		}
+
+
+		//Redirect the output to fdout, which is fdpipe[1]
+		dup2(fdout, 1);
+		close(fdout);
+		dup2(fderr, 2);
+		close(fderr);
+
+		//setenv, unsetenv, cd
+		if (builtIn(i)) {
+			return;
+		}
+
+		//create child process
+		ret = fork();
+		
+		if (ret == -1) {
+			perror("fork\n");
+			exit(2);
+		}
+
+		if (ret == 0) 
+		{
+			std::vector<char *> vec;
+			std::vector<char *> vec_new;
+			char c[300];
+			char * vec2;
+			for(unsigned int a=0;a<_simpleCommands[i]->_arguments.size();a++)
+			{
+				if(strcmp(_simpleCommands[i]->_arguments[a]->c_str(), "${$}")==0)
+				{
+					sprintf(c, "%d", proc);
+					vec2 = c;
+				}
+				else if(strcmp(_simpleCommands[i]->_arguments[a]->c_str(), "${?}")==0)
+				{
+				}
+				else if(strcmp(_simpleCommands[i]->_arguments[a]->c_str(), "${!}")==0)
+				{
+					strcpy(c, getenv("$!"));
+					vec2 = c;
+				}
+				if(strcmp(_simpleCommands[i]->_arguments[a]->c_str(), "${_}")==0)
+				{
+					vec2 = const_cast<char *>(_simpleCommands[i-1]->_arguments[_simpleCommands[i-1]->_arguments.size()-1]->c_str());
+				}
+				else if(strcmp(_simpleCommands[i]->_arguments[a]->c_str(), "${SHELL}")==0)
+				{
+					//char c[300];
+					char * path = realpath("../shell", c);
+					if(path)
+						vec2 = c;
+					else
+						perror("realpath");
+				}
+				else
+					vec2 = const_cast<char *>(_simpleCommands[i]->_arguments[a]->c_str());
+				vec.push_back(vec2);
+			}
+			vec.push_back(NULL);
+			if(strcmp(_simpleCommands[i]->_arguments[0]->c_str(),"printenv") == 0)
+			{
+				int j=0;
+				while(environ[j])
+				{
+					printf("%s\n", environ[j]);
+					j++;
+				}
+				exit(0);
+			}
+				execvp(_simpleCommands[i]->_arguments[0]->c_str(), vec.data());
+			perror("execvp");
+			_exit(1);
+
+		}	//if pid ==  0 
+	}	//for
+
+	//restore in/out/err to default
+	dup2(tmpin, 0);
+	dup2(tmpout, 1);
+	dup2(tmperr, 2);
+	close(tmpin);
+	close(tmpout);
+	close(tmperr);
+
+	if(!_background)
+	{
+		//wait for last process
+		int i;
+		proc = waitpid(ret, &i, 0);
+		if(WIFEXITED(i))
+			status = WEXITSTATUS(i);
+		//proc = waitpid(ret, NULL, 0);
+		//if(WIFEXITED(status))
+	}
+	// Clear to prepare for next command
+	clear();
+
+	// Print new prompt
+	if(isatty(0))
+	Shell::prompt();
+}	//execute
 
 SimpleCommand * Command::_currentSimpleCommand;

@@ -2,11 +2,13 @@
 #include <cstdlib>
 
 #include <iostream>
-
+#include <string.h>
 #include "simpleCommand.hh"
 
 SimpleCommand::SimpleCommand() {
   _arguments = std::vector<std::string *>();
+  envtrue = false;
+  tildtrue = false;
 }
 
 SimpleCommand::~SimpleCommand() {
@@ -16,9 +18,46 @@ SimpleCommand::~SimpleCommand() {
   }
 }
 
+//Environement Variable Expansion
+//Environement Variable Expansion
+std::string * SimpleCommand::envexpansion(std::string * argument) {
+	
+	return argument;
+}
+
 void SimpleCommand::insertArgument( std::string * argument ) {
-  // simply add the argument to the vector
-  _arguments.push_back(argument);
+	int i=0;
+	char * str = strdup(argument -> c_str());
+	char * arg = strdup(argument -> c_str());
+	//char * str = (char *)malloc(strlen(argument)+1);
+	char * text = str;
+	bool esc = false;
+	if(*text == '~')
+	{
+		
+	}
+	else{
+	while(*text!='\0')
+	{
+		if(!esc && *text == '\\')
+		{
+			esc = true;
+		}
+		else
+		{
+			str[i] = *text;
+			i++;
+			esc = false;
+		}
+		text++;
+	}
+	str[i] = '\0';
+	}
+	
+	std::string * pb = new std::string(str);
+	_arguments.push_back(pb);
+	free(str);
+	delete argument;
 }
 
 // Print out the simple command
