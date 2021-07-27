@@ -1341,3 +1341,9 @@ Your branch is up to date with 'origin/master'.
 M	.local.git.out
 Your branch is ahead of 'origin/master' by 1 commit.
   (use "git push" to publish your local commits)
+[master 51f99b8] Commit
+ 1 file changed, 5 insertions(+)
+M	.local.git.out
+M	shell.cc
+Your branch is ahead of 'origin/master' by 2 commits.
+  (use "git push" to publish your local commits)
