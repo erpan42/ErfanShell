@@ -1497,3 +1497,10 @@ M	test-shell/file-list-1
 M	test-shell/file-list-2
 M	test-shell/testall.out
 Your branch is up to date with 'origin/master'.
+[master 85cec88] Commit
+ 5 files changed, 11 insertions(+), 81 deletions(-)
+ delete mode 100644 shell22.cc
+M	.local.git.out
+M	shell.y
+M	test-shell/testall.out
+Your branch is up to date with 'origin/master'.
