@@ -98,6 +98,46 @@ int mygetc(FILE * f) {
 	return TWOGREAT;
 }
 
+source {
+  BEGIN(src);
+}
+
+<src>[^ \t\n][^ \t\n]* {
+  FILE * in = fopen(yytext, "r+");
+
+  if (!in) {
+    perror("fopen");
+    BEGIN(INITIAL);
+  } else {
+    fputc('\n', in);
+    yypush_buffer_state(yy_create_buffer(in, YY_BUF_SIZE));
+    BEGIN(INITIAL);
+    Shell::_srcCmd = true;
+    yyparse();
+    yypop_buffer_state();
+    fclose(in);
+    Shell::_srcCmd = false;
+  }
+}
+
+~[^ \n\t]* {
+  std::string str = std::string(yytext);
+  std::string home = getenv("HOME");
+  if (str.size() == 1) {
+    yylval.cpp_string = new std::string(home);
+  } 
+  else {
+    if (str[1] == '/') {
+      str = home + str.substr(1, -1);
+    } 
+    else {
+      str = std::string("/homes/") + str.substr(1,-1);
+    }
+    yylval.cpp_string = new std::string(str);
+  }
+  return WORD;
+}
+
 \$\([^\n]*\) {
 	/*  Subshell*/
 	//get rid of $(
@@ -166,6 +206,8 @@ int mygetc(FILE * f) {
 		myunputc(buffer[j]);
 	}
 }
+
+
 
 ["][^\n\"]*["] {
 	/* Quotes */
