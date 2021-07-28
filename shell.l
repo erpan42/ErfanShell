@@ -275,61 +275,7 @@ $\{[^ \}\n]*\}([^ \n]*|$\{[^ \}\n]*\})* {
   return WORD;
 }
 
-\`[^\n\`]*\`|$\([^\n]*\) {
-  std::string str = std::string(yytext);
-  if (str.at(0) == '$') {
-    str = str.substr(1,str.size()-1);
-  }
-  str = str.substr(1,str.size()-2);
-  str += "\nexit\n";
-  //printf("str : %s",str.c_str());
 
-  int pin[2], pout[2], tmpin, tmpout;
-  tmpin = dup(0); tmpout = dup(1);
-  pipe(pin); pipe(pout);
-
-  dup2(pin[0], 0);
-  dup2(pout[1], 1);
-  close(pin[0]);
-  close(pout[1]);
-
-  write(pin[1], str.c_str(), str.size());
-  close(pin[1]);
-
-  int ret = fork();
-  if (ret==0) {
-    char ** args = new char*[2];
-    args[0] = (char*)"/proc/self/exe";
-    args[1] = NULL;
-    execvp(args[0], args);
-    perror("execvp(subshell)");
-    exit(1);
-  } else if (ret < 0) {
-    perror("fork");
-    exit(1);
-  } else {
-
-    waitpid(ret, NULL, 0);
-
-    dup2(tmpin, 0);
-    dup2(tmpout, 1);
-    close(tmpin);
-    close(tmpout);
-  
-    int BUFSIZE = 1024;
-    char* c = new char[BUFSIZE];
-    int rd = read(pout[0], c, BUFSIZE);
-    close(pout[0]);
-
-    for (int i = rd - 12; i >= 0; --i ) {
-      if (c[i] == '\n') {
-        c[i] = '\t';
-      }
-      myunputc( c[i] );
-    }
-    delete c;
-  }
-}
 
 
 [^ \t\n|><][^ \t\n|><]*  {
